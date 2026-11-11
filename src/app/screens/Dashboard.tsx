@@ -1,13 +1,14 @@
 import { motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import Icon from '../../components/Icon';
-import { doctor, l, patient, STAGE, stages } from '../../data/content';
+import { companion, doctor, l, patient, STAGE, stages } from '../../data/content';
+import { ListenBar } from '../../voice/VoiceUI';
 import { useStore } from '../../store';
 import { actionsFor, aheadText, minutesText, stageStatus } from '../journeyUtil';
 import { Avatar, Badge, Roll, Section, rise, stagger } from '../ui';
 
 export default function Dashboard() {
-  const { t, stage, queue, blood, go, openMap, setFocus, lang } = useStore();
+  const { t, stage, queue, blood, go, openMap, setFocus, lang, role } = useStore();
   const cur = stages[Math.min(stage, stages.length - 1)];
   const done = stage >= STAGE.complete;
   const pct = Math.round((Math.min(stage, 8) / 8) * 100);
@@ -25,13 +26,20 @@ export default function Dashboard() {
       <div className="dash__hero">
         <div className="dash__hero-bg" />
         <motion.div className="dash__hello" variants={rise}>
-          <Avatar src={patient.avatar} size={48} ring />
+          <Avatar src={role === 'companion' ? companion.avatar : patient.avatar} size={48} ring />
           <div>
             <h1>
-              {t(l('مرحبًا بك،', 'Welcome,'))} {t(patient.first)}
+              {t(l('مرحبًا بك،', 'Welcome,'))} {t(role === 'companion' ? companion.name : patient.first)}
             </h1>
-            <p>{t(l('نتمنى لك رحلة صحية ميسّرة.', 'We wish you a smooth healthcare journey.'))}</p>
+            <p>
+              {role === 'companion'
+                ? t(l(`أنتِ ترافقين ${patient.first.ar} في زيارته اليوم.`, `You're accompanying ${patient.first.en} on today's visit.`))
+                : t(l('نتمنى لك رحلة صحية ميسّرة.', 'We wish you a smooth healthcare journey.'))}
+            </p>
           </div>
+        </motion.div>
+        <motion.div className="dash__listen" variants={rise}>
+          <ListenBar line="screen.dashboard" />
         </motion.div>
 
         <motion.article className="visit" variants={rise}>

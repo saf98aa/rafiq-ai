@@ -14,6 +14,8 @@ const ALL: { id: ScreenId; icon: string }[] = [
   { id: 'meds', icon: 'pill' },
   { id: 'map', icon: 'map' },
   { id: 'discharge', icon: 'flag' },
+  { id: 'voice', icon: 'mic' },
+  { id: 'access', icon: 'a11y' },
 ];
 
 export function LangSwitch() {
@@ -97,6 +99,14 @@ export default function More() {
               <span>{t(l('اللغة', 'Language'))}</span>
               <LangSwitch />
             </div>
+            <button className="setting setting--link" onClick={() => go('access')}>
+              <Icon name="a11y" size={19} />
+              <span>
+                {t(l('إعدادات الوصول الميسر', 'Accessibility settings'))}
+                <small>{t(l('الخط، التباين، الصوت، الحركة', 'Text, contrast, voice, motion'))}</small>
+              </span>
+              <Icon name="chevron" size={16} className="flip-rtl" />
+            </button>
             <div className="setting">
               <Icon name="present" size={19} />
               <span>
@@ -124,7 +134,7 @@ export default function More() {
           <Icon name="sparkle" size={17} />
           {t(l('الانتقال إلى الختام', 'Go to the closing'))}
         </button>
-        <p className="fine center">{t(l('نموذج أولي — جميع البيانات تجريبية ولا يوجد ربط فعلي بأنظمة المستشفى أو بنفاذ.', 'Prototype — all data is fictional; no real hospital-system or Nafath connection.'))}</p>
+        <p className="fine center">{t(l('نموذج أولي — جميع البيانات تجريبية ولا يوجد ربط فعلي بأنظمة المستشفى.', 'Prototype — all data is fictional; there is no real hospital-system connection.'))}</p>
       </motion.div>
     </motion.div>
   );

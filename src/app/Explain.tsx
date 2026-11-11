@@ -42,6 +42,15 @@ export default function ExplainCard({ screen, compact = false }: { screen: Scree
           </motion.li>
         ))}
       </ol>
+      {e.beneficiaries && (
+        <div className="explain__who">
+          <b>
+            <Icon name="users" size={15} />
+            {t(l('المستفيدون', 'Who benefits'))}
+          </b>
+          <p>{t(e.beneficiaries)}</p>
+        </div>
+      )}
     </motion.div>
   );
 }

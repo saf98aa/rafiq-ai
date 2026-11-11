@@ -15,31 +15,46 @@ export type ScreenId =
   | 'meds'
   | 'map'
   | 'discharge'
-  | 'more';
+  | 'more'
+  | 'voice'
+  | 'access';
 
 export const patient = {
   name: l('محمد عبدالله', 'Mohammed Abdullah'),
   first: l('محمد', 'Mohammed'),
+  age: l('68 سنة', '68 years'),
   visit: 'VIS-0001',
-  hospital: l('المستشفى التخصصي (نموذج تجريبي)', 'Specialist Hospital (demo)'),
+  hospital: l('مستشفى المدينة العام (نموذج تجريبي)', 'Al Madinah General Hospital (demo)'),
   dept: l('العيادات الخارجية — الباطنة', 'Outpatient — Internal Medicine'),
   date: l('الثلاثاء، 10 نوفمبر', 'Tuesday, 10 November'),
   appt: '09:30',
-  avatar: './media/av_patient.webp',
+  avatar: './media/people/av_patient.webp',
+};
+
+export const companion = {
+  name: l('ريم', 'Reem'),
+  relation: l('ابنته ومرافقته', 'His daughter and companion'),
+  avatar: './media/people/av_companion.webp',
 };
 
 export const doctor = {
   name: l('د. سارة العتيبي', 'Dr. Sara Alotaibi'),
   specialty: l('استشارية الطب الباطني', 'Consultant, Internal Medicine'),
   clinic: l('عيادة الباطنة رقم 4', 'Internal Medicine — Clinic 4'),
-  floor: l('الطابق الأرضي، الجناح الشرقي', 'Ground floor, East wing'),
-  avatar: './media/av_doctor.webp',
+  floor: l('الطابق الأرضي — منطقة العيادات', 'Ground floor — clinics area'),
+  avatar: './media/people/av_doctor.webp',
 };
 
 export const nurse = {
   name: l('الممرضة نورة', 'Nurse Noura'),
   role: l('التمريض — العيادات الخارجية', 'Nursing — Outpatient clinics'),
-  avatar: './media/av_nurse.webp',
+  avatar: './media/people/av_nurse.webp',
+};
+
+export const pharmacist = {
+  name: l('الصيدلي يوسف', 'Pharmacist Yousef'),
+  role: l('صيدلية المستشفى', 'Hospital pharmacy'),
+  avatar: './media/people/av_pharmacist.webp',
 };
 
 export type Stage = {
@@ -139,18 +154,18 @@ export const exams = [
   {
     id: 'xray',
     icon: 'scan',
-    name: l('أشعة سينية للصدر', 'Chest X-ray'),
-    place: l('قسم الأشعة — الطابق الأرضي', 'Radiology — Ground floor'),
+    name: l('تصوير بالموجات فوق الصوتية', 'Ultrasound scan'),
+    place: l('غرف الموجات فوق الصوتية — الطابق الأرضي', 'Ultrasound rooms — Ground floor'),
     dest: 'radiology' as const,
-    duration: l('10 – 15 دقيقة تقريبًا', 'About 10–15 minutes'),
-    prep: l('إزالة الإكسسوارات والأغراض المعدنية قبل التصوير.', 'Remove jewellery and metal items before imaging.'),
+    duration: l('15 – 20 دقيقة تقريبًا', 'About 15–20 minutes'),
+    prep: l('سيُبلغك قسم الأشعة بأي تحضير مطلوب قبل التصوير.', 'The imaging team will tell you about any preparation needed before the scan.'),
     doneAt: '10:40',
   },
   {
     id: 'blood',
     icon: 'drop',
     name: l('تحليل الدم الشامل', 'Complete blood count'),
-    place: l('المختبر — الطابق الأرضي، الجناح الغربي', 'Laboratory — Ground floor, West wing'),
+    place: l('عينات المعامل — الطابق الأرضي', 'Lab samples — Ground floor'),
     dest: 'lab' as const,
     duration: l('5 – 10 دقائق لسحب العينة', 'About 5–10 minutes for the sample'),
     prep: l('لا توجد تعليمات تحضير مسجّلة لهذا الطلب.', 'No preparation instructions were recorded for this request.'),
@@ -211,144 +226,24 @@ export const medQA = [
   },
 ];
 
-// ---------- Hospital map (simplified prototype floor plan, viewBox 340 x 440) ----------
-export type DestId = 'reception' | 'clinics' | 'lab' | 'radiology' | 'pharmacy' | 'waiting';
-export const rooms: { id: DestId | 'elev' | 'wc' | 'main'; x: number; y: number; w: number; h: number; label: L; icon: string }[] = [
-  { id: 'radiology', x: 34, y: 44, w: 120, h: 56, label: l('الأشعة', 'Radiology'), icon: 'scan' },
-  { id: 'elev', x: 186, y: 44, w: 52, h: 56, label: l('المصاعد', 'Lifts'), icon: 'lift' },
-  { id: 'wc', x: 246, y: 44, w: 60, h: 56, label: l('دورات المياه', 'Restrooms'), icon: 'wc' },
-  { id: 'lab', x: 34, y: 122, w: 120, h: 96, label: l('المختبر', 'Laboratory'), icon: 'flask' },
-  { id: 'clinics', x: 186, y: 122, w: 120, h: 96, label: l('العيادات 1–6', 'Clinics 1–6'), icon: 'stethoscope' },
-  { id: 'pharmacy', x: 34, y: 242, w: 120, h: 52, label: l('الصيدلية', 'Pharmacy'), icon: 'pill' },
-  { id: 'waiting', x: 186, y: 242, w: 120, h: 52, label: l('انتظار العيادات', 'Clinic waiting'), icon: 'chair' },
-  { id: 'reception', x: 34, y: 317, w: 120, h: 70, label: l('الاستقبال', 'Reception'), icon: 'desk' },
-  { id: 'main', x: 186, y: 317, w: 120, h: 70, label: l('صالة الانتظار', 'Main waiting hall'), icon: 'chair' },
-];
-export const youAreHere = { x: 246, y: 356 };
-export const routes: Record<DestId, [number, number][]> = {
-  reception: [[246, 356], [246, 306], [94, 306], [94, 322]],
-  clinics: [[246, 356], [246, 306], [170, 306], [170, 230], [246, 230], [246, 214]],
-  lab: [[246, 356], [246, 306], [170, 306], [170, 230], [94, 230], [94, 214]],
-  radiology: [[246, 356], [246, 306], [170, 306], [170, 110], [94, 110], [94, 96]],
-  pharmacy: [[246, 356], [246, 306], [94, 306], [94, 290]],
-  waiting: [[246, 356], [246, 306], [246, 290]],
-};
-export const destLabel: Record<DestId, L> = {
-  reception: l('الاستقبال', 'Reception'),
-  clinics: l('عيادة الباطنة رقم 4', 'Internal Medicine — Clinic 4'),
-  lab: l('المختبر', 'Laboratory'),
-  radiology: l('قسم الأشعة', 'Radiology'),
-  pharmacy: l('الصيدلية', 'Pharmacy'),
-  waiting: l('انتظار العيادات', 'Clinic waiting area'),
-};
-
-// ---------- Problem hotspots (Scene 02) ----------
-export type Hotspot = {
-  id: string;
-  station: 'waiting' | 'corridor' | 'entrance';
-  x: number;
-  y: number;
-  title: L;
-  body: L;
-  fix: L;
-  fixScreen: ScreenId;
-  icon: string;
-};
-export const hotspots: Hotspot[] = [
-  {
-    id: 'patient',
-    station: 'waiting',
-    x: 0.44,
-    y: 0.5,
-    icon: 'help',
-    title: l('لا يعرف ما الخطوة التالية', "Not knowing what happens next"),
-    body: l('سجّل محمد وصوله، لكن لا أحد أخبره بما سيحدث بعد ذلك أو متى.', 'Mohammed has checked in, but no one has told him what comes next, or when.'),
-    fix: l('رحلتي — كل مراحل الزيارة في خط زمني واحد', 'My Journey — every stage of the visit on one timeline'),
-    fixScreen: 'journey',
-  },
-  {
-    id: 'crowd',
-    station: 'waiting',
-    x: 0.87,
-    y: 0.55,
-    icon: 'clock',
-    title: l('أوقات انتظار غير واضحة', 'Unclear waiting times'),
-    body: l('الصالة مزدحمة، ولا يعرف كم مريضًا قبله ولا كم سينتظر.', 'The hall is busy, and he cannot tell how many people are ahead of him or how long it will take.'),
-    fix: l('شاشة الانتظار — ترتيبك والوقت المتوقع', 'Queue screen — your position and estimated time'),
-    fixScreen: 'queue',
-  },
-  {
-    id: 'screen',
-    station: 'waiting',
-    x: 0.16,
-    y: 0.3,
-    icon: 'monitor',
-    title: l('شاشات لا تخاطبه شخصيًا', "Screens that don't speak to him"),
-    body: l('الشاشة تعرض أرقامًا عامة، ويظل يتساءل: هل هذا رقمي؟ هل فاتني دوري؟', 'The display shows generic numbers. He keeps wondering: is that mine? Did I miss my turn?'),
-    fix: l('تنبيهات شخصية عندما يحين دورك', 'Personal updates when your turn comes'),
-    fixScreen: 'queue',
-  },
-  {
-    id: 'family',
-    station: 'waiting',
-    x: 0.7,
-    y: 0.42,
-    icon: 'users',
-    title: l('المرافق لا يعرف أيضًا', 'The companion is left guessing too'),
-    body: l('مرافقه يسأل عن الخطوة القادمة، ولا توجد إجابة واضحة يشاركها معه.', 'His companion asks about the next step, and there is no clear answer to share.'),
-    fix: l('لوحة الزيارة — حالة واضحة يفهمها الجميع', 'Visit dashboard — a clear status anyone can follow'),
-    fixScreen: 'dashboard',
-  },
-  {
-    id: 'corridor',
-    station: 'corridor',
-    x: 0.93,
-    y: 0.31,
-    icon: 'map',
-    title: l('صعوبة الوصول إلى القسم الصحيح', 'Hard to find the right department'),
-    body: l('ممرات متشابهة ولافتات كثيرة… أين المختبر؟ وأين الأشعة؟', 'Similar corridors, many signs… where is the lab? Where is radiology?'),
-    fix: l('خريطة المستشفى — مسار مقترح إلى وجهتك', 'Hospital map — a suggested route to your destination'),
-    fixScreen: 'map',
-  },
-  {
-    id: 'tests',
-    station: 'corridor',
-    x: 0.88,
-    y: 0.64,
-    icon: 'flask',
-    title: l('فحوصات ونتائج بلا متابعة', 'Tests and results with no visibility'),
-    body: l('هل بدأ التحليل؟ متى تظهر النتيجة؟ ومن سيشرحها له؟', 'Has the test started? When will the result be ready? Who will explain it?'),
-    fix: l('الفحوصات والنتائج — حالة كل طلب أولًا بأول', 'Tests & results — the status of every request, as it changes'),
-    fixScreen: 'exams',
-  },
-  {
-    id: 'entrance',
-    station: 'entrance',
-    x: 0.66,
-    y: 0.72,
-    icon: 'door',
-    title: l('من أين أبدأ؟', 'Where do I start?'),
-    body: l('عند الوصول، لا يعرف أين يسجّل ولا أي باب يقصد.', 'On arrival, he does not know where to register or which door to take.'),
-    fix: l('لوحة رفيق — خطوتك التالية دائمًا أمامك', 'Rafiq dashboard — your next step, always in view'),
-    fixScreen: 'dashboard',
-  },
-];
+// ---------- Hospital map: see data/blueprint.ts (built from the real floor plans) ----------
+export type { DestId } from './blueprint';
 
 // ---------- "Why this feature?" explanations ----------
-export type Explain = { title: L; problem: L; decision: L; value: L; connection: L };
+export type Explain = { title: L; problem: L; decision: L; value: L; connection: L; beneficiaries?: L };
 export const explanations: Partial<Record<ScreenId, Explain>> = {
   welcome: {
-    title: l('الترحيب والدخول', 'Welcome & sign-in'),
+    title: l('الدخول المبسّط', 'Simplified onboarding'),
     problem: l(
-      'يصل المريض متوترًا، ولا يريد إنشاء حساب جديد أو تذكّر كلمة مرور في لحظة كهذه.',
-      'Patients arrive anxious and should not have to create an account or remember a password at that moment.'
+      'متطلبات التحقق الخارجية قد تمنع الزوار ولجنة التحكيم من استكشاف النموذج الأولي.',
+      'External authentication requirements can prevent visitors and the jury from exploring a prototype.'
     ),
     decision: l(
-      'نقطة دخول مألوفة توحي بالأمان عبر نفاذ، مع مسار دخول تجريبي سريع لأغراض العرض.',
-      'A familiar, secure-feeling entry point via Nafath, plus a quick demo path for presentations.'
+      'دخول فوري إلى زيارة تجريبية، مع اختيار: هل أنت المريض أم مرافقه؟ — دون أي ربط بخدمات تحقق خارجية.',
+      'Immediate access to a demo visit, with a choice of patient or companion — and no external authentication service.'
     ),
-    value: l('دخول بخطوة واحدة يربط المريض مباشرةً بزيارته الحالية.', 'One-step access that links the patient straight to the current visit.'),
-    connection: l('بعد الدخول، تفتح لوحة الزيارة لتُظهر أين يقف المريض الآن.', 'After sign-in, the visit dashboard opens to show where the patient stands right now.'),
+    value: l('تستطيع اللجنة استكشاف رفيق مباشرة، دون اعتماديات خارجية.', 'The jury can explore Rafiq right away, without external dependencies.'),
+    connection: l('بعد الدخول، تفتح لوحة الزيارة لتُظهر أين يقف المريض الآن.', 'After entering, the visit dashboard shows where the patient stands right now.'),
   },
   dashboard: {
     title: l('لوحة الزيارة', 'Visit dashboard'),
@@ -418,13 +313,13 @@ export const explanations: Partial<Record<ScreenId, Explain>> = {
     connection: l('تصبح الإرشادات جزءًا من ملخص الخروج ومتابعة ما بعد الزيارة.', 'The guidance becomes part of the discharge summary and post-visit follow-up.'),
   },
   map: {
-    title: l('خريطة المستشفى', 'Hospital map'),
-    problem: l('المستشفيات كبيرة ومتشابهة الممرات، والوصول للقسم الصحيح مرهق.', 'Hospitals are large with similar corridors; finding the right department is exhausting.'),
+    title: l('خريطة المستشفى التفاعلية', 'Interactive hospital map'),
+    problem: l('قد يصعب على المرضى تحديد أقسام المستشفى ومعرفة إلى أين يتجهون.', 'Patients may struggle to identify hospital departments and understand where to go.'),
     decision: l(
-      'خريطة مبسّطة تبرز الوجهة وتقترح مسارًا — دون ادعاء ملاحة داخلية فعلية.',
-      'A simplified map that highlights the destination and suggests a route — without claiming real indoor positioning.'
+      'خريطة تفاعلية مبنية على مخططات معمارية حقيقية، مع مسارات تتبع الممرات الموثقة فقط، وشرح صوتي للمسار — دون ادعاء تحديد موقع فعلي.',
+      'An interactive map built on real architectural drawings, with routes that follow only documented corridors and a spoken explanation — without claiming real positioning.'
     ),
-    value: l('ثقة أكبر في التنقل، ووصول أسرع، وأسئلة أقل لموظفي الاستقبال.', 'More confident movement, faster arrival, and fewer questions at reception.'),
+    value: l('يعرف المريض وجهته ويفهم المسار المقترح، بالصورة والصوت.', 'Patients identify their destination and understand the suggested route, by sight and by sound.'),
     connection: l('الوجهة تُقترح تلقائيًا حسب المرحلة: العيادة، المختبر، ثم الصيدلية.', 'Destinations are suggested by stage: the clinic, the lab, then the pharmacy.'),
   },
   discharge: {
@@ -433,6 +328,28 @@ export const explanations: Partial<Record<ScreenId, Explain>> = {
     decision: l('ختام منظّم يلخّص المراحل المكتملة والتعليمات وموعد المتابعة.', 'An organised close that summarises completed stages, instructions and follow-up.'),
     value: l('يغادر المريض مطمئنًا، ويعرف تمامًا ما المطلوب منه.', 'Patients leave reassured, knowing exactly what is expected of them.'),
     connection: l('تبقى الإرشادات متاحة للعودة إليها، ويستمر رفيق في المتابعة.', 'Instructions stay available to revisit, and Rafiq stays with them for the follow-up.'),
+  },
+  voice: {
+    title: l('رفيق يتحدث معك', 'Rafiq Voice Companion'),
+    problem: l('ليس كل المرضى قادرين على قراءة المعلومات المكتوبة أو فهمها بسهولة.', 'Not all patients can comfortably read or understand written information.'),
+    decision: l(
+      'شرح صوتي لكل صفحة، وأسئلة بالصوت أو باختيار سؤال جاهز، بصوت سعودي واضح وأزرار كبيرة — مع ترجمة نصية لكل ما يُقال.',
+      'Spoken explanations for every page and voice questions (or ready-made ones), in a clear Saudi voice with large controls — with captions for everything spoken.'
+    ),
+    value: l('وصول أسهل للمعلومة، ومريض يفهم رحلته العلاجية بالاستماع.', 'Better accessibility, and patients who understand their healthcare journey by listening.'),
+    connection: l('الصوت متصل بكل مرحلة: الانتظار، الخريطة، النتائج، وتعليمات الصيدلية.', 'Voice is connected to every stage: waiting, the map, results and pharmacy instructions.'),
+    beneficiaries: l(
+      'ذوو الإعاقة البصرية، وكبار السن، ومن يجد صعوبة في القراءة، ومن يفضّل التواصل المسموع.',
+      'Visually impaired people, elderly patients, people with low literacy, and patients who prefer spoken communication.'
+    ),
+  },
+  access: {
+    title: l('إعدادات الوصول الميسر', 'Accessibility settings'),
+    problem: l('تصميم واحد لا يناسب الجميع: الخط الصغير والتباين المنخفض والحركة الكثيرة تُبعد بعض المرضى.', 'One design does not fit everyone: small text, low contrast and heavy motion shut some patients out.'),
+    decision: l('إعدادات واضحة لتكبير الخط، ورفع التباين، وتبسيط الواجهة، وتقليل الحركة، والإرشاد الصوتي.', 'Clear settings for larger text, higher contrast, a simpler interface, reduced motion and voice guidance.'),
+    value: l('يكيّف كل مريض رفيق حسب احتياجه، ويستخدمه باستقلالية.', 'Each patient adapts Rafiq to their needs and uses it independently.'),
+    connection: l('تنطبق الإعدادات على كل شاشات الرحلة فورًا.', 'The settings apply instantly across every screen of the journey.'),
+    beneficiaries: l('كبار السن، وضعاف البصر، ومستخدمو قارئ الشاشة ولوحة المفاتيح.', 'Elderly patients, people with low vision, and screen-reader and keyboard users.'),
   },
 };
 
@@ -448,4 +365,6 @@ export const screenTitle: Record<ScreenId, L> = {
   map: l('الخريطة', 'Map'),
   discharge: l('الخروج', 'Discharge'),
   more: l('المزيد', 'More'),
+  voice: l('رفيق يتحدث معك', 'Rafiq Voice Companion'),
+  access: l('الوصول الميسر', 'Accessibility'),
 };

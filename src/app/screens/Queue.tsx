@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Icon from '../../components/Icon';
 import { doctor, l, STAGE, stages } from '../../data/content';
 import { useStore } from '../../store';
@@ -7,12 +7,19 @@ import { aheadText, minutesText } from '../journeyUtil';
 import { Avatar, DemoButton, Header, Notice, Roll } from '../ui';
 
 export default function Queue() {
-  const { t, queue, advanceQueue, stage, setStage, go, openMap } = useStore();
+  const { t, queue, advanceQueue, stage, setStage, go, openMap, announce } = useStore();
   const waiting = stage <= STAGE.waiting;
   const turn = waiting && queue.ahead === 0;
   const total = 3;
   const progress = waiting ? (total - queue.ahead) / total : 1;
   const C = 2 * Math.PI * 88;
+
+  // screen-reader announcement whenever the queue moves
+  const prevAhead = useRef(queue.ahead);
+  useEffect(() => {
+    if (prevAhead.current !== queue.ahead && waiting) announce(t(aheadText(queue.ahead)));
+    prevAhead.current = queue.ahead;
+  }, [queue.ahead, waiting, announce, t]);
 
   // gentle live ticking while the patient watches the screen (stops one before their turn)
   useEffect(() => {

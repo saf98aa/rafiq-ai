@@ -9,7 +9,7 @@ import ExplainCard from './Explain';
 import PhoneApp from './PhoneApp';
 import { StageSim, Toggle } from './screens/More';
 
-const QUICK: ScreenId[] = ['dashboard', 'journey', 'queue', 'doctor', 'exams', 'results', 'meds', 'map', 'discharge'];
+const QUICK: ScreenId[] = ['dashboard', 'journey', 'voice', 'queue', 'doctor', 'exams', 'results', 'meds', 'map', 'discharge', 'access'];
 
 function useDeviceScale(reserve: number) {
   const calc = () => Math.min(1, Math.max(0.55, (window.innerHeight - reserve) / 868));
@@ -67,7 +67,7 @@ export default function AppStage() {
       {framed && (
         <>
           <div className="appbg" aria-hidden="true">
-            <img src="./media/S04_Visit_Registration.webp" alt="" />
+            <img src="./media/hospital/emergency.webp" alt="" />
           </div>
           <Atmosphere tint="rafiq" sweep={false} motes={14} />
         </>
@@ -130,7 +130,7 @@ export default function AppStage() {
             </div>
 
             <div className="panel__foot">
-              <button className="btn btn--glass btn--sm" onClick={() => goScene('transform')}>
+              <button className="btn btn--glass btn--sm" onClick={() => goScene('story', 3)}>
                 <Icon name="arrowBack" size={15} className="flip-rtl" />
                 {t(l('العودة إلى القصة', 'Back to the story'))}
               </button>

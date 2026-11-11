@@ -1,0 +1,238 @@
+{
+  "screen.welcome": {
+    "en": "e5f5cfa670",
+    "ar": "7becf87031"
+  },
+  "screen.dashboard": {
+    "en": "d14949b739",
+    "ar": "81d4f7307a"
+  },
+  "screen.journey": {
+    "ar": "09349a0e6e",
+    "en": "92a483f2ed"
+  },
+  "screen.queue": {
+    "ar": "49074b54f3",
+    "en": "61b6c79a66"
+  },
+  "screen.doctor": {
+    "en": "1aa65c64c3",
+    "ar": "16541abda9"
+  },
+  "screen.exams": {
+    "ar": "5f39f77b36",
+    "en": "ba8b8794a9"
+  },
+  "screen.results.ready": {
+    "ar": "58598da68f",
+    "en": "145368ad26"
+  },
+  "screen.results.pending": {
+    "ar": "6ac6e27d41",
+    "en": "6150322d2f"
+  },
+  "screen.results.none": {
+    "en": "e9fc2e0788",
+    "ar": "e78e5bc9cc"
+  },
+  "screen.meds": {
+    "ar": "10d04021dd",
+    "en": "b60f39b52e"
+  },
+  "screen.map": {
+    "ar": "86e2664bf2",
+    "en": "aa62764124"
+  },
+  "screen.discharge": {
+    "ar": "8d005dd545",
+    "en": "9e77f4d252"
+  },
+  "screen.more": {
+    "ar": "da84fb623c",
+    "en": "3db53a5225"
+  },
+  "screen.voice": {
+    "ar": "60c7f86e0f",
+    "en": "8c6a61037d"
+  },
+  "screen.access": {
+    "ar": "5fd516fb26",
+    "en": "f485dd0cb2"
+  },
+  "where.0": {
+    "ar": "15d9b50061",
+    "en": "71587dfe01"
+  },
+  "where.1": {
+    "ar": "5c8fe8ba72",
+    "en": "d3126bf6b0"
+  },
+  "where.2": {
+    "ar": "644721bdc1",
+    "en": "a0a81810ce"
+  },
+  "where.3": {
+    "ar": "534b0f8cd5",
+    "en": "20d2e4c885"
+  },
+  "where.4": {
+    "ar": "bb25e05cd3",
+    "en": "119d96ebbf"
+  },
+  "where.5": {
+    "ar": "7fc908eefc",
+    "en": "5222cc9717"
+  },
+  "where.6": {
+    "ar": "ae8f742d27",
+    "en": "4888219dbd"
+  },
+  "where.7": {
+    "ar": "78d4ea3872",
+    "en": "7adf8d9823"
+  },
+  "where.8": {
+    "ar": "0fb38ded84",
+    "en": "b381c69900"
+  },
+  "next.0": {
+    "ar": "69fa39b42b",
+    "en": "3d206a0b14"
+  },
+  "next.1": {
+    "ar": "ecffdf7a97",
+    "en": "eed49771b8"
+  },
+  "next.2": {
+    "ar": "98fcea69c6",
+    "en": "5786d19bd9"
+  },
+  "next.3": {
+    "ar": "2b984b2008",
+    "en": "af5ba4ff25"
+  },
+  "next.4": {
+    "ar": "4e4049a9a5",
+    "en": "aa3f29f839"
+  },
+  "next.5": {
+    "ar": "ff2091adb8",
+    "en": "7e3b0762f1"
+  },
+  "next.6": {
+    "ar": "6ab5c580bf",
+    "en": "b3981bd160"
+  },
+  "next.7": {
+    "ar": "fdb6b0c6c4",
+    "en": "81559787cd"
+  },
+  "next.8": {
+    "ar": "545211baed",
+    "en": "ed51a2c19f"
+  },
+  "queue.3": {
+    "ar": "ef67e20023",
+    "en": "46df3ffaea"
+  },
+  "queue.2": {
+    "ar": "173eb30b8e",
+    "en": "95f4769420"
+  },
+  "queue.1": {
+    "ar": "50ba3acb85",
+    "en": "7fcbb4b21e"
+  },
+  "queue.0": {
+    "ar": "b3f3d099db",
+    "en": "87c8f99753"
+  },
+  "queue.none": {
+    "ar": "a71fd5ada7",
+    "en": "9ea8fda81f"
+  },
+  "results.none": {
+    "ar": "b81f2223de",
+    "en": "4a19feeb3d"
+  },
+  "results.pending": {
+    "ar": "f70f5d6ddd",
+    "en": "158e45a88b"
+  },
+  "results.ready": {
+    "ar": "2171b2a601",
+    "en": "1072b64b09"
+  },
+  "ans.pharmacy": {
+    "ar": "b88e8af0e4",
+    "en": "ff2953b6cc"
+  },
+  "route.reception": {
+    "ar": "e2ae28a4e7",
+    "en": "2c9d8cfdb7"
+  },
+  "route.clinics": {
+    "ar": "a55aed406b",
+    "en": "dd2f1fabc4"
+  },
+  "route.lab": {
+    "ar": "a717f65801",
+    "en": "d05cf19b10"
+  },
+  "route.radiology": {
+    "ar": "e0b9c870c6",
+    "en": "e70cfb80d1"
+  },
+  "route.er": {
+    "ar": "8ecc1e9f42",
+    "en": "cbb6b26c97"
+  },
+  "route.pharmacy": {
+    "ar": "e8cd51820a",
+    "en": "76237ef849"
+  },
+  "med.intro": {
+    "ar": "5c08cbab2a",
+    "en": "fa867f5300"
+  },
+  "med.m1": {
+    "ar": "e5ed00d26a",
+    "en": "8baa886fda"
+  },
+  "med.outro": {
+    "ar": "727b2a5164",
+    "en": "ad3464b709"
+  },
+  "med.m2": {
+    "ar": "05509b9bf5",
+    "en": "6b4a7a0630"
+  },
+  "vc.hello": {
+    "ar": "5aeb758862",
+    "en": "8d81f14d63"
+  },
+  "vc.unknown": {
+    "ar": "e1fb8c1b20",
+    "en": "a844cf83b1"
+  },
+  "story.meet": {
+    "ar": "91fb725038",
+    "en": "f8298a6b25"
+  },
+  "story.voice": {
+    "ar": "b3fb406f40",
+    "en": "3bb82869a3"
+  },
+  "story.exams": {
+    "ar": "ed097d869a",
+    "en": "d9a0a458f4"
+  },
+  "story.results": {
+    "ar": "ffb3a81627",
+    "en": "804e137d99"
+  },
+  "story.done": {
+    "ar": "71ea2442be",
+    "en": "1b96086876"
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "screen.welcome": {
+    "ar": "مرحبًا بك في رفيق. اضغط على زر: ابدأ رحلتك مع رفيق، للدخول إلى زيارتك التجريبية.",
+    "en": "Welcome to Rafiq. Press Start Your Journey with Rafiq to open your demo visit."
+  },
+  "screen.dashboard": {
+    "ar": "مرحبًا بك، أنا رفيق. من هنا يمكنك متابعة رحلتك الصحية ومعرفة مرحلتك الحالية والخطوة التالية.",
+    "en": "Welcome, I'm Rafiq. From here you can follow your healthcare journey, and see your current stage and your next step."
+  },
+  "screen.journey": {
+    "ar": "هذه رحلتك الصحية اليوم. ترى المراحل التي اكتملت، والمرحلة الحالية، وما ينتظرك بعدها. اضغط على أي مرحلة لتعرف تفاصيلها.",
+    "en": "This is your healthcare journey today. You can see the stages that are done, where you are now, and what comes next. Tap any stage for its details."
+  },
+  "screen.queue": {
+    "ar": "أنت الآن في مرحلة انتظار الطبيب. يمكنك معرفة موقعك في قائمة الانتظار والوقت المتوقع لوصول دورك.",
+    "en": "You are now waiting for the doctor. Here you can see your place in the queue and the estimated time until your turn."
+  },
+  "screen.doctor": {
+    "ar": "هنا تتعرّف على طبيبتك وموعدك، وما تحتاج تجهيزه قبل الدخول إلى الاستشارة.",
+    "en": "Here you can meet your doctor, see your appointment, and what to prepare before the consultation."
+  },
+  "screen.exams": {
+    "ar": "هنا تتابع فحوصاتك: مكان كل فحص، ومدته، وحالته الآن. اضغط على الفحص لمعرفة الاتجاهات إليه.",
+    "en": "Here you can follow your tests: where each one happens, how long it takes, and its status now. Tap a test for directions."
+  },
+  "screen.results.ready": {
+    "ar": "تتوفر لديك نتائج فحوصات. يمكنك الاطلاع عليها أو الرجوع إلى الطبيب لفهم تفاصيلها.",
+    "en": "You have test results available. You can view them, or go back to your doctor to understand the details."
+  },
+  "screen.results.pending": {
+    "ar": "نتائج فحوصاتك قيد الإعداد. سأخبرك عندما تصدر، وطبيبتك هي من تشرح لك تفاصيلها.",
+    "en": "Your test results are being prepared. I'll let you know when they're released, and your doctor will explain the details."
+  },
+  "screen.results.none": {
+    "ar": "لا توجد نتائج بعد. ستظهر هنا بعد إجراء الفحوصات.",
+    "en": "There are no results yet. They will appear here after your tests."
+  },
+  "screen.meds": {
+    "ar": "سأساعدك على الاستماع إلى التعليمات المسجلة الخاصة بأدويتك.",
+    "en": "I'll help you listen to the recorded instructions for your medications."
+  },
+  "screen.map": {
+    "ar": "يمكنني مساعدتك في الوصول إلى القسم الذي تبحث عنه. اختر وجهتك وسأوضح لك المسار.",
+    "en": "I can help you reach the department you're looking for. Choose your destination and I'll show you the way."
+  },
+  "screen.discharge": {
+    "ar": "هذه صفحة الخروج. تجد فيها ملخص زيارتك، وتعليمات فريق الرعاية، وموعد المتابعة.",
+    "en": "This is the discharge page. It has your visit summary, your care team's instructions, and your follow-up appointment."
+  },
+  "screen.more": {
+    "ar": "هنا الإعدادات: اللغة، وإعدادات الوصول الميسر، وكل شاشات التطبيق.",
+    "en": "Here are the settings: language, accessibility settings, and every screen in the app."
+  },
+  "screen.voice": {
+    "ar": "أنا رفيق. اضغط على زر الميكروفون واسألني بصوتك، أو اختر سؤالًا من الأسئلة المقترحة.",
+    "en": "I'm Rafiq. Press the microphone button and ask me out loud, or choose one of the suggested questions."
+  },
+  "screen.access": {
+    "ar": "هذه إعدادات الوصول الميسر. يمكنك تكبير الخط، وزيادة التباين، وتبسيط الواجهة، وتشغيل الإرشاد الصوتي.",
+    "en": "These are the accessibility settings. You can enlarge the text, increase contrast, simplify the interface, and turn on voice guidance."
+  },
+
+  "where.0": {
+    "ar": "توجّه الآن إلى الاستقبال لتسجيل زيارتك. اختر الاستقبال في الخريطة وسأوضح لك المسار.",
+    "en": "Please head to reception to register your visit. Choose reception on the map and I'll show you the way."
+  },
+  "where.1": {
+    "ar": "أنت الآن في مرحلة التسجيل. ابقَ قريبًا من الاستقبال حتى يناديك فريق التمريض.",
+    "en": "You're at the registration stage. Stay near reception until the nursing team calls you."
+  },
+  "where.2": {
+    "ar": "حان وقت التقييم التمريضي. سيناديك فريق التمريض، وبعدها تنتظر دورك مع الطبيبة.",
+    "en": "It's time for your nursing assessment. The nursing team will call you, then you'll wait for your turn with the doctor."
+  },
+  "where.3": {
+    "ar": "ابقَ في صالة الانتظار. سأنبّهك عندما يحين دورك، وبعدها تتوجّه إلى منطقة العيادات.",
+    "en": "Stay in the waiting hall. I'll let you know when it's your turn, and then you'll head to the clinics area."
+  },
+  "where.4": {
+    "ar": "توجّه الآن إلى منطقة العيادات، لموعدك مع الدكتورة سارة العتيبي.",
+    "en": "Please go to the clinics area now, for your appointment with Doctor Sara Alotaibi."
+  },
+  "where.5": {
+    "ar": "توجّه إلى قسم عينات المعامل لسحب عينة التحليل. اختره في الخريطة وسأوضح لك المسار.",
+    "en": "Please go to the lab samples department for your blood sample. Choose it on the map and I'll show you the way."
+  },
+  "where.6": {
+    "ar": "صدرت نتائجك. ارجع إلى منطقة العيادات لمناقشتها مع طبيبتك.",
+    "en": "Your results are out. Go back to the clinics area to discuss them with your doctor."
+  },
+  "where.7": {
+    "ar": "توجّه إلى الصيدلية لاستلام أدويتك والاستماع إلى تعليماتها.",
+    "en": "Please go to the pharmacy to collect your medications and listen to their instructions."
+  },
+  "where.8": {
+    "ar": "اكتملت زيارتك. تقدر تغادر الآن، وتبقى تعليماتك محفوظة في رفيق.",
+    "en": "Your visit is complete. You can leave now, and your instructions stay saved in Rafiq."
+  },
+
+  "next.0": { "ar": "خطوتك التالية هي التسجيل في الاستقبال.", "en": "Your next step is registering at reception." },
+  "next.1": { "ar": "خطوتك التالية هي التقييم التمريضي.", "en": "Your next step is the nursing assessment." },
+  "next.2": { "ar": "بعد التقييم التمريضي، تنتظر دورك مع الطبيبة.", "en": "After the nursing assessment, you'll wait for your turn with the doctor." },
+  "next.3": {
+    "ar": "خطوتك التالية هي الاستشارة مع الدكتورة سارة العتيبي، عندما يحين دورك.",
+    "en": "Your next step is the consultation with Doctor Sara Alotaibi, when your turn comes."
+  },
+  "next.4": { "ar": "بعد الاستشارة، تُجري الفحوصات التي تطلبها الطبيبة.", "en": "After the consultation, you'll have the tests your doctor requests." },
+  "next.5": { "ar": "بعد اكتمال الفحوصات، ننتظر صدور النتائج.", "en": "Once your tests are complete, we wait for the results." },
+  "next.6": {
+    "ar": "خطوتك التالية مناقشة النتائج مع طبيبتك، ثم استلام إرشادات الأدوية.",
+    "en": "Your next step is discussing the results with your doctor, then receiving your medication guidance."
+  },
+  "next.7": { "ar": "خطوتك التالية استلام أدويتك من الصيدلية، ثم إنهاء الزيارة.", "en": "Your next step is collecting your medications from the pharmacy, then finishing your visit." },
+  "next.8": { "ar": "اكتملت رحلتك اليوم. راجع موعد المتابعة في ملخص الخروج.", "en": "Your journey is complete for today. Check your follow-up appointment in the discharge summary." },
+
+  "queue.3": {
+    "ar": "دورك بعد ثلاثة مرضى، والوقت المتوقع حوالي خمس عشرة دقيقة. هذا تقدير تقريبي.",
+    "en": "There are three patients ahead of you. The estimated wait is about fifteen minutes. This is only an estimate."
+  },
+  "queue.2": { "ar": "دورك بعد مريضَين، والوقت المتوقع حوالي عشر دقائق.", "en": "There are two patients ahead of you. The estimated wait is about ten minutes." },
+  "queue.1": { "ar": "دورك بعد مريض واحد. استعد، الوقت المتوقع حوالي خمس دقائق.", "en": "There is one patient ahead of you. Get ready, it should be about five minutes." },
+  "queue.0": { "ar": "حان دورك! توجّه الآن إلى منطقة العيادات.", "en": "It's your turn! Please go to the clinics area now." },
+  "queue.none": { "ar": "انتهت مرحلة الانتظار، ولا يوجد لديك دور حاليًا.", "en": "The waiting stage is over, and you are not in a queue right now." },
+
+  "results.none": {
+    "ar": "لم تُطلب لك فحوصات بعد. ستظهر النتائج هنا بعد الاستشارة والفحوصات.",
+    "en": "No tests have been requested yet. Results will appear here after your consultation and tests."
+  },
+  "results.pending": { "ar": "لم تصدر نتائج التحليل بعد. سأخبرك فور صدورها.", "en": "Your test results are not out yet. I'll tell you as soon as they are." },
+  "results.ready": {
+    "ar": "نعم، صدرت نتائجك. تقدر تشوف حالتها في رفيق، وطبيبتك هي من تشرح لك تفاصيلها.",
+    "en": "Yes, your results are out. You can see their status in Rafiq, and your doctor will explain the details."
+  },
+
+  "ans.pharmacy": {
+    "ar": "الصيدلية في طابق القبو حسب مخطط المستشفى. أعرض لك موقعها في الخريطة، واسأل الاستقبال عن أقرب مصعد.",
+    "en": "According to the hospital plan, the pharmacy is on the basement floor. I'll show you its location on the map; ask reception for the nearest lift."
+  },
+
+  "route.reception": {
+    "ar": "للوصول إلى الاستقبال وملفات الزوار، اتبع المسار الموضح على الخريطة. الاستقبال في الطابق الأرضي، بجوار الصالة التي أنت فيها.",
+    "en": "To reach reception and visitor files, follow the route shown on the map. Reception is on the ground floor, next to the hall you are in."
+  },
+  "route.clinics": {
+    "ar": "للوصول إلى منطقة العيادات، اتبع المسار الموضح على الخريطة. العيادات في الطابق الأرضي.",
+    "en": "To reach the clinics area, follow the route shown on the map. The clinics are on the ground floor."
+  },
+  "route.lab": {
+    "ar": "للوصول إلى المختبر، اتبع المسار الموضح على الخريطة. قسم عينات المعامل في الطابق الأرضي، بجوار الاستقبال والصالة الوسطى.",
+    "en": "To reach the lab, follow the route shown on the map. Lab samples is on the ground floor, next to reception and the central hall."
+  },
+  "route.radiology": {
+    "ar": "للوصول إلى غرف الموجات فوق الصوتية، اتبع المسار الموضح على الخريطة. القسم في الطابق الأرضي، بجوار الصالة الوسطى.",
+    "en": "To reach the ultrasound rooms, follow the route shown on the map. They are on the ground floor, next to the central hall."
+  },
+  "route.er": {
+    "ar": "طوارئ الأطفال والنساء في الطابق الأرضي، ولها مدخل طوارئ خارجي. اتبع المسار الموضح على الخريطة.",
+    "en": "The children's and women's emergency is on the ground floor, with its own emergency entrance. Follow the route shown on the map."
+  },
+  "route.pharmacy": {
+    "ar": "الصيدلية في طابق القبو حسب المخطط. المخطط لا يوضح الطريق بين الطوابق، لذلك أعرض لك موقعها فقط. اسأل الاستقبال عن أقرب مصعد.",
+    "en": "According to the plan, the pharmacy is on the basement floor. The plan does not show the way between floors, so I'm only showing its location. Ask reception for the nearest lift."
+  },
+
+  "med.intro": {
+    "ar": "سأقرأ لك تعليمات أدويتك كما سجّلها فريق الرعاية. هذه بيانات تجريبية للعرض.",
+    "en": "I'll read your medication instructions as your care team recorded them. This is demo data."
+  },
+  "med.m1": {
+    "ar": "الدواء الأول: باراسيتامول، أقراص. يُستخدم عند الحاجة وفق الجرعة المكتوبة في وصفتك الطبية. لا تتجاوز الجرعة التي حدّدها طبيبك.",
+    "en": "First medication: Paracetamol, tablets. Use when needed, following the dose written on your prescription. Do not exceed the dose set by your doctor."
+  },
+  "med.m2": {
+    "ar": "الدواء الثاني: فيتامين د، كبسولات. يُستخدم بالانتظام الذي حدّده فريق الرعاية في الوصفة، أسبوعيًا. استشر الصيدلي إن كنت تستخدم مكمّلات أخرى.",
+    "en": "Second medication: Vitamin D, capsules. Take it on the schedule your care team set on the prescription, weekly. Ask the pharmacist if you take other supplements."
+  },
+  "med.outro": {
+    "ar": "إذا عندك أي سؤال عن أدويتك، اسأل الصيدلي قبل أن تغادر.",
+    "en": "If you have any question about your medications, ask the pharmacist before you leave."
+  },
+
+  "vc.hello": { "ar": "أهلًا، أنا رفيق. كيف أقدر أساعدك؟", "en": "Hi, I'm Rafiq. How can I help you?" },
+  "vc.unknown": {
+    "ar": "عذرًا، ما فهمت سؤالك. جرّب أحد الأسئلة المقترحة.",
+    "en": "Sorry, I didn't catch that. Try one of the suggested questions."
+  },
+
+  "story.meet": {
+    "ar": "أهلًا محمد، أنا رفيق. أنت الآن في مرحلة انتظار الطبيب، ودورك بعد ثلاثة مرضى.",
+    "en": "Hello Mohammed, I'm Rafiq. You're now waiting for the doctor, and there are three patients ahead of you."
+  },
+  "story.voice": {
+    "ar": "لا تشيل هم، أنا معك. بعد الانتظار تقابل الدكتورة سارة، وأنا أنبّهك أول ما يجي دورك.",
+    "en": "Don't worry, I'm with you. After the wait you'll see Doctor Sara, and I'll let you know the moment it's your turn."
+  },
+  "story.exams": {
+    "ar": "عندك فحصين: عينة دم في عينات المعامل، وتصوير بالموجات فوق الصوتية. أدلّك على مكان كل واحد منهم.",
+    "en": "You have two tests: a blood sample at lab samples, and an ultrasound scan. I'll guide you to each one."
+  },
+  "story.results": {
+    "ar": "صدرت نتائجك. طبيبتك هي من تشرح لك تفاصيلها، وأنا أوضح لك الخطوة التالية.",
+    "en": "Your results are out. Your doctor will explain the details, and I'll show you the next step."
+  },
+  "story.done": { "ar": "اكتملت رحلتك الصحية. شكرًا لثقتك برفيق.", "en": "Your healthcare journey is complete. Thank you for trusting Rafiq." }
+}

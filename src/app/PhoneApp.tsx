@@ -16,6 +16,11 @@ import Meds from './screens/Meds';
 import MapScreen from './screens/MapScreen';
 import Discharge from './screens/Discharge';
 import More from './screens/More';
+import VoiceCompanion from './screens/VoiceCompanion';
+import AccessSettings from './screens/AccessSettings';
+import { VoicePlaybackControls } from '../voice/VoiceUI';
+import { useVoice } from '../voice/VoiceProvider';
+import { screenLine } from '../voice/logic';
 
 const SCREENS: Record<ScreenId, ComponentType> = {
   welcome: Welcome,
@@ -29,13 +34,15 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   map: MapScreen,
   discharge: Discharge,
   more: More,
+  voice: VoiceCompanion,
+  access: AccessSettings,
 };
 
 const TABS: { id: ScreenId; icon: string; label: ReturnType<typeof l> }[] = [
   { id: 'dashboard', icon: 'home', label: l('الرئيسية', 'Home') },
   { id: 'journey', icon: 'route', label: l('رحلتي', 'Journey') },
+  { id: 'voice', icon: 'mic', label: l('رفيق', 'Rafiq') },
   { id: 'map', icon: 'map', label: l('الخريطة', 'Map') },
-  { id: 'meds', icon: 'pill', label: l('أدويتي', 'Meds') },
   { id: 'more', icon: 'more', label: l('المزيد', 'More') },
 ];
 
@@ -65,7 +72,8 @@ function StatusBar() {
 }
 
 export default function PhoneApp({ framed, wide, preview = false }: { framed: boolean; wide: boolean; preview?: boolean }) {
-  const { screen, nav, tab, presentation, explainOpen, setExplainOpen, t, lang } = useStore();
+  const { screen, nav, tab, presentation, explainOpen, setExplainOpen, t, lang, a11y, stage, queue, liveMsg } = useStore();
+  const voice = useVoice();
   const [portal, setPortal] = useState<HTMLElement | null>(null);
   const prev = useRef(nav.length);
   const push = nav.length >= prev.current;
@@ -74,6 +82,20 @@ export default function PhoneApp({ framed, wide, preview = false }: { framed: bo
   }, [nav.length]);
 
   const shown: ScreenId = preview ? 'welcome' : screen;
+
+  // optional: read each page's explanation when it opens (never sensitive details)
+  const lastRead = useRef<string | null>(null);
+  useEffect(() => {
+    if (preview || !a11y.autoRead || shown === 'welcome') return;
+    if (lastRead.current === shown) return;
+    lastRead.current = shown;
+    const line = screenLine(shown, { stage, ahead: queue.ahead });
+    if (line) voice.speak(line);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shown, a11y.autoRead, preview]);
+  useEffect(() => {
+    if (!a11y.autoRead) lastRead.current = null;
+  }, [a11y.autoRead]);
   const Comp = SCREENS[shown];
   const d = (push ? 1 : -1) * (lang === 'ar' ? -1 : 1);
   const activeTab = [...nav].reverse().find((s) => TABS.some((x) => x.id === s)) ?? 'dashboard';
@@ -111,9 +133,15 @@ export default function PhoneApp({ framed, wide, preview = false }: { framed: bo
             {TABS.map((x) => {
               const on = activeTab === x.id;
               return (
-                <button key={x.id} className={`bnav__b ${on ? 'is-on' : ''}`} onClick={() => tab(x.id)} aria-current={on ? 'page' : undefined}>
-                  {on && <motion.span layoutId={`bnav-pill-${framed ? 'f' : 'm'}`} className="bnav__pill" transition={{ type: 'spring', stiffness: 400, damping: 32 }} />}
-                  <Icon name={x.icon} size={21} stroke={on ? 2.1 : 1.8} />
+                <button key={x.id} className={`bnav__b ${on ? 'is-on' : ''} ${x.id === 'voice' ? 'bnav__b--voice' : ''}`} onClick={() => tab(x.id)} aria-current={on ? 'page' : undefined} aria-label={x.id === 'voice' ? t(l('رفيق يتحدث معك', 'Rafiq Voice Companion')) : undefined}>
+                  {on && x.id !== 'voice' && <motion.span layoutId={`bnav-pill-${framed ? 'f' : 'm'}`} className="bnav__pill" transition={{ type: 'spring', stiffness: 400, damping: 32 }} />}
+                  {x.id === 'voice' ? (
+                    <span className="bnav__mic">
+                      <Icon name="mic" size={22} stroke={2} />
+                    </span>
+                  ) : (
+                    <Icon name={x.icon} size={21} stroke={on ? 2.1 : 1.8} />
+                  )}
                   <span>{t(x.label)}</span>
                 </button>
               );
@@ -122,7 +150,7 @@ export default function PhoneApp({ framed, wide, preview = false }: { framed: bo
         )}
 
         <AnimatePresence>
-          {presentation && hasExplain && !wide && !preview && shown !== 'welcome' && (
+          {presentation && hasExplain && !wide && !preview && shown !== 'welcome' && voice.status === 'idle' && (
             <motion.button
               key={shown}
               className="why-chip"
@@ -139,6 +167,12 @@ export default function PhoneApp({ framed, wide, preview = false }: { framed: bo
           )}
         </AnimatePresence>
 
+        {!preview && shown !== 'welcome' && shown !== 'voice' && <VoicePlaybackControls />}
+        {!preview && (
+          <div className="sr-only" role="status" aria-live="polite">
+            {liveMsg}
+          </div>
+        )}
         {!preview && (
           <Sheet open={explainOpen && hasExplain} onClose={() => setExplainOpen(false)} tone="dark" title={t(l('لماذا هذه الميزة؟', 'Why this feature?'))}>
             <ExplainCard screen={shown} />

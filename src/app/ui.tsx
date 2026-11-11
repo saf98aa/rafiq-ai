@@ -4,12 +4,16 @@ import { createPortal } from 'react-dom';
 import Icon from '../components/Icon';
 import { l, type L } from '../data/content';
 import { useStore } from '../store';
+import { screenLine } from '../voice/logic';
+import { ListenBar } from '../voice/VoiceUI';
 
 export const PortalCtx = createContext<HTMLElement | null>(null);
 
-export function Header({ title, sub, back = true, right }: { title: L; sub?: L; back?: boolean; right?: ReactNode }) {
-  const { t, back: goBack, nav } = useStore();
+export function Header({ title, sub, back = true, right, listen = true }: { title: L; sub?: L; back?: boolean; right?: ReactNode; listen?: boolean }) {
+  const { t, back: goBack, nav, screen, stage, queue } = useStore();
+  const line = listen ? screenLine(screen, { stage, ahead: queue.ahead }) : null;
   return (
+    <>
     <header className="ah">
       {back && nav.length > 1 ? (
         <button className="ah__btn" onClick={goBack} aria-label={t(l('رجوع', 'Back'))}>
@@ -24,6 +28,12 @@ export function Header({ title, sub, back = true, right }: { title: L; sub?: L; 
       </div>
       {right ?? <span className="ah__spacer" />}
     </header>
+    {line && (
+      <div className="ah__listen">
+        <ListenBar line={line} />
+      </div>
+    )}
+    </>
   );
 }
 

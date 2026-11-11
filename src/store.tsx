@@ -2,7 +2,19 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { STAGE, type DestId, type ExamStatus, type L, type ScreenId } from './data/content';
 
 export type Lang = 'ar' | 'en';
-export type Scene = 'intro' | 'problem' | 'transform' | 'app' | 'closing';
+export type Scene = 'story' | 'app' | 'closing';
+export type Role = 'patient' | 'companion';
+export type A11y = {
+  voiceGuide: boolean; // Rafiq speaks in response to your actions (e.g. route directions)
+  autoRead: boolean; // read each page's explanation automatically when it opens
+  large: boolean;
+  contrast: boolean;
+  simple: boolean;
+  motion: boolean; // reduce motion
+  labels: boolean; // show text labels on icon-only buttons
+  announce: boolean; // screen-reader live announcements
+};
+export const A11Y_DEFAULT: A11y = { voiceGuide: true, autoRead: false, large: false, contrast: false, simple: false, motion: false, labels: false, announce: true };
 
 type Queue = { ahead: number; serving: number; mine: number };
 
@@ -13,7 +25,16 @@ type Ctx = {
   dir: 'rtl' | 'ltr';
 
   scene: Scene;
-  goScene: (s: Scene) => void;
+  goScene: (s: Scene, storyAt?: number) => void;
+  storyIdx: number;
+  setStoryIdx: (n: number) => void;
+
+  role: Role;
+  setRole: (r: Role) => void;
+  a11y: A11y;
+  setA11y: (patch: Partial<A11y>) => void;
+  announce: (msg: string) => void;
+  liveMsg: string;
 
   presentation: boolean;
   setPresentation: (v: boolean) => void;
@@ -60,7 +81,17 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       return 'ar';
     }
   });
-  const [scene, setScene] = useState<Scene>('intro');
+  const [scene, setScene] = useState<Scene>('story');
+  const [storyIdx, setStoryIdx] = useState(0);
+  const [role, setRole] = useState<Role>('patient');
+  const [liveMsg, setLiveMsg] = useState('');
+  const [a11y, setA11yState] = useState<A11y>(() => {
+    try {
+      return { ...A11Y_DEFAULT, ...JSON.parse(localStorage.getItem('rafiq-a11y') || '{}') };
+    } catch {
+      return A11Y_DEFAULT;
+    }
+  });
   const [presentation, setPresentationState] = useState<boolean>(() => {
     try {
       return localStorage.getItem('rafiq-presentation') !== 'off';
@@ -91,6 +122,34 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, [lang, dir]);
 
   const t = useCallback((x: L) => x[lang], [lang]);
+
+  const setA11y = useCallback((patch: Partial<A11y>) => {
+    setA11yState((a) => {
+      const n = { ...a, ...patch };
+      try {
+        localStorage.setItem('rafiq-a11y', JSON.stringify(n));
+      } catch {
+        /* ignore */
+      }
+      return n;
+    });
+  }, []);
+  useEffect(() => {
+    const c = document.documentElement.classList;
+    c.toggle('a11y-large', a11y.large);
+    c.toggle('a11y-contrast', a11y.contrast);
+    c.toggle('a11y-simple', a11y.simple);
+    c.toggle('a11y-motion', a11y.motion);
+    c.toggle('a11y-labels', a11y.labels);
+  }, [a11y]);
+  const announce = useCallback(
+    (msg: string) => {
+      if (!a11y.announce) return;
+      setLiveMsg('');
+      window.setTimeout(() => setLiveMsg(msg), 60);
+    },
+    [a11y.announce]
+  );
 
   const setPresentation = useCallback((v: boolean) => {
     setPresentationState(v);
@@ -155,8 +214,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setDiscovered((d) => (d.includes(id) ? d : [...d, id]));
   }, []);
 
-  const goScene = useCallback((s: Scene) => {
+  const goScene = useCallback((s: Scene, storyAt?: number) => {
     setScene(s);
+    if (storyAt !== undefined) setStoryIdx(storyAt);
     window.scrollTo(0, 0);
   }, []);
 
@@ -168,7 +228,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setMapDest(null);
     setDiscovered([]);
     setExplainOpen(false);
-    setScene('intro');
+    setRole('patient');
+    setStoryIdx(0);
+    setScene('story');
   }, [setStage]);
 
   const value = useMemo<Ctx>(
@@ -179,6 +241,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       dir,
       scene,
       goScene,
+      storyIdx,
+      setStoryIdx,
+      role,
+      setRole,
+      a11y,
+      setA11y,
+      announce,
+      liveMsg,
       presentation,
       setPresentation,
       explainOpen,
@@ -205,7 +275,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       setFocus,
       restart,
     }),
-    [lang, t, dir, scene, goScene, presentation, setPresentation, explainOpen, loggedIn, stage, setStage, queue, advanceQueue, blood, advanceBlood, examStatus, nav, go, tab, back, mapDest, openMap, discovered, discover, focus, restart]
+    [lang, t, dir, scene, goScene, storyIdx, role, a11y, setA11y, announce, liveMsg, presentation, setPresentation, explainOpen, loggedIn, stage, setStage, queue, advanceQueue, blood, advanceBlood, examStatus, nav, go, tab, back, mapDest, openMap, discovered, discover, focus, restart]
   );
 
   return <C.Provider value={value}>{children}</C.Provider>;

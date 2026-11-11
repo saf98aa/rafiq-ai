@@ -1,9 +1,32 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import Icon from '../../components/Icon';
-import { l, medQA, meds, STAGE } from '../../data/content';
+import { l, medQA, meds, pharmacist, STAGE } from '../../data/content';
+import { ListenBar } from '../../voice/VoiceUI';
 import { useStore } from '../../store';
-import { DemoButton, Empty, Header, Notice, Section, rise, stagger } from '../ui';
+import { Avatar, DemoButton, Empty, Header, Notice, Section, rise, stagger } from '../ui';
+
+/** Spoken pharmacy guidance: the pharmacist's verified (demo) instructions, read by Rafiq. */
+function PharmacyVoiceGuidance() {
+  const { t } = useStore();
+  return (
+    <div className="pvg">
+      <div className="pvg__who">
+        <Avatar src={pharmacist.avatar} size={52} ring />
+        <div>
+          <b>{t(pharmacist.name)}</b>
+          <small>{t(pharmacist.role)}</small>
+        </div>
+        <span className="pvg__ok">
+          <Icon name="shield" size={14} />
+          {t(l('تعليمات معتمدة (تجريبية)', 'Verified instructions (demo)'))}
+        </span>
+      </div>
+      <p>{t(l('يقرأ لك رفيق تعليمات الصيدلي كما سُجّلت، دون أي إضافة أو تعديل على الوصفة.', "Rafiq reads the pharmacist's instructions exactly as recorded, with no additions or changes to the prescription."))}</p>
+      <ListenBar line={['med.intro', ...meds.map((m) => `med.${m.id}`), 'med.outro']} label={l('استمع إلى تعليمات الدواء', 'Listen to the medication instructions')} />
+    </div>
+  );
+}
 
 export default function Meds() {
   const { t, stage, setStage, openMap, go } = useStore();
@@ -46,6 +69,10 @@ export default function Meds() {
         </Notice>
       </motion.div>
 
+      <motion.div className="screen__pad" variants={rise}>
+        <PharmacyVoiceGuidance />
+      </motion.div>
+
       <div className="meds">
         {meds.map((m) => (
           <motion.article key={m.id} className="med" variants={rise}>
@@ -74,6 +101,7 @@ export default function Meds() {
                 <dd>{t(m.note)}</dd>
               </div>
             </dl>
+            <ListenBar line={`med.${m.id}`} label={l('استمع إلى تعليمات هذا الدواء', 'Listen to this medication')} />
             <div className="med__times">
               <Icon name="bell" size={14} />
               {m.times.map((x) => (

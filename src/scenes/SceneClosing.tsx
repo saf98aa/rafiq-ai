@@ -5,7 +5,8 @@ import Icon from '../components/Icon';
 import { Mark } from '../components/Logo';
 import { l, stages } from '../data/content';
 import { useStore } from '../store';
-import { M, StoryLine, useIsPortrait, useTimeline } from './shared';
+import { hospitalPhotos } from '../data/people';
+import { StoryLine, useIsPortrait, useTimeline } from './shared';
 
 const HEAD = l('أكثر من مجرد تطبيق. رفيق يرافقك في رحلتك الصحية.', 'More than an app. A companion throughout the healthcare journey.');
 const SUB = l('يحوّل رفيق تجربة المريض من خطوات متفرقة إلى رحلة أكثر وضوحًا وترابطًا.', 'Rafiq transforms fragmented hospital experiences into a clearer, more connected patient journey.');
@@ -24,7 +25,7 @@ export default function SceneClosing() {
   return (
     <section className="scene scene--closing" aria-label={t(l('الختام', 'Closing'))}>
       <div className="scene__plate">
-        <CameraStage src={M.S10} shot={{ x: portrait ? 0.4 : 0.42, y: 0.4, z: portrait ? 1 : 1.12 }} duration={10} dof={4} imgStyle={{ filter: 'brightness(.62) saturate(.95)' }} />
+        <CameraStage src={hospitalPhotos.exterior.src} aspect={hospitalPhotos.exterior.w / hospitalPhotos.exterior.h} shot={{ x: 0.5, y: 0.45, z: portrait ? 1 : 1.08 }} duration={12} dof={3} imgStyle={{ filter: 'brightness(.5) saturate(.95)' }} />
       </div>
       <Atmosphere tint="rafiq" motes={24} />
       <div className="scene__scrim scene__scrim--closing" />
@@ -71,8 +72,8 @@ export default function SceneClosing() {
         <p className="closing__note">
           {t(
             l(
-              'نموذج أولي لأغراض العرض. جميع البيانات تجريبية، ولا يوجد ربط فعلي بأنظمة المستشفيات أو بنفاذ.',
-              'Prototype for demonstration. All data is fictional; there is no real connection to hospital systems or Nafath.'
+              'نموذج أولي لأغراض العرض. جميع البيانات تجريبية، ولا يوجد ربط فعلي بأنظمة المستشفيات.',
+              'Prototype for demonstration. All data is fictional; there is no real connection to hospital systems.'
             )
           )}
         </p>

@@ -3,17 +3,6 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { useStore } from '../store';
 import type { L } from '../data/content';
 
-export const M = {
-  S01: './media/S01_Emergency.webp',
-  S02: './media/S02_Waiting.webp',
-  S03: './media/S03_Rafiq_Introduction.webp',
-  S04: './media/S04_Visit_Registration.webp',
-  S05: './media/S05_Nursing_Assessment.webp',
-  S06: './media/S06_Doctor_And_Tests.webp',
-  S07: './media/S07_Hospital_Navigation.webp',
-  S09: './media/S09_Return_Home.webp',
-  S10: './media/S10_AI_Pharmacist.webp',
-};
 
 /** Fires an increasing phase counter at the given millisecond marks. */
 export function useTimeline(marks: number[]) {
