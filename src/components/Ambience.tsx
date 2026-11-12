@@ -9,10 +9,10 @@ type Kind = 'thobe' | 'nurse' | 'abaya' | 'coat';
 type Walker = { id: number; kind: Kind; dir: 1 | -1; dur: number; scale: number; blur: number; op: number; bottom: number };
 
 const palette: Record<Kind, { body: string; head: string; trim: string; leg: string }> = {
-  thobe: { body: '#EEF2F5', head: '#E9E4E4', trim: '#C8313B', leg: '#D9DEE3' },
-  nurse: { body: '#1E3A66', head: '#1A2F55', trim: '#2A4C82', leg: '#1E3A66' },
-  abaya: { body: '#15181D', head: '#121417', trim: '#24282F', leg: '#15181D' },
-  coat: { body: '#F7F9FB', head: '#3A2A22', trim: '#7FB6DA', leg: '#2C4A73' },
+  thobe: { body: '#f1eef5', head: '#E9E4E4', trim: '#C8313B', leg: '#ded9e3' },
+  nurse: { body: '#401e66', head: '#361a55', trim: '#532a82', leg: '#401e66' },
+  abaya: { body: '#19151d', head: '#141217', trim: '#29242f', leg: '#19151d' },
+  coat: { body: '#f9f7fb', head: '#3A2A22', trim: '#a97fda', leg: '#4d2c73' },
 };
 
 function Figure({ kind }: { kind: Kind }) {

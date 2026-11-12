@@ -8,6 +8,8 @@ import './styles/base.css';
 import './styles/scenes.css';
 import './styles/app.css';
 import './styles/voice.css';
+import './styles/flow.css';
+import './styles/modes.css';
 
 function Shell() {
   const { lang, a11y } = useStore();

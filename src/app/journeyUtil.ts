@@ -21,7 +21,7 @@ export function actionsFor(stage: number, ahead: number): Action[] {
       return [
         { icon: 'clock', title: l('معرفة وقت الانتظار', 'Check waiting time'), sub: aheadText(ahead), screen: 'queue', tone: 'primary' },
         { icon: 'pin', title: l('الوصول إلى العيادة', 'Get to the clinic'), sub: l('عيادة الباطنة رقم 4', 'Internal Medicine — Clinic 4'), dest: 'clinics' },
-        { icon: 'stethoscope', title: l('تعرّف على طبيبك', 'Meet your doctor'), sub: l('د. سارة العتيبي', 'Dr. Sara Alotaibi'), screen: 'doctor' },
+        { icon: 'stethoscope', title: l('تعرّف على طبيبك', 'Meet your doctor'), sub: l('د. يسرى زكريا', 'Dr. Yusra Zakaria'), screen: 'doctor' },
         { icon: 'route', title: l('معرفة التعليمات القادمة', 'See what comes next'), sub: l('مراحل زيارتك اليوم', "Today's visit stages"), screen: 'journey' },
       ];
     case STAGE.consultation:
@@ -33,7 +33,7 @@ export function actionsFor(stage: number, ahead: number): Action[] {
     case STAGE.exams:
       return [
         { icon: 'flask', title: l('متابعة الفحوصات', 'Track your tests'), sub: l('فحص واحد بانتظار التنفيذ', 'One test awaiting'), screen: 'exams', tone: 'primary' },
-        { icon: 'pin', title: l('الطريق إلى المختبر', 'Route to the lab'), sub: l('الطابق الأرضي، الجناح الغربي', 'Ground floor, West wing'), dest: 'lab' },
+        { icon: 'pin', title: l('الطريق إلى المختبر', 'Route to the lab'), sub: l('الطابق الأرضي — بجوار الاستقبال', 'Ground floor — next to reception'), dest: 'lab' },
         { icon: 'file', title: l('حالة النتائج', 'Results status'), sub: l('قيد الإعداد', 'Being prepared'), screen: 'results' },
       ];
     case STAGE.results:
@@ -45,7 +45,7 @@ export function actionsFor(stage: number, ahead: number): Action[] {
       return [
         { icon: 'pill', title: l('إرشادات الأدوية', 'Medication guidance'), sub: l('تعليمات فريق الرعاية', 'From your care team'), screen: 'meds', tone: 'primary' },
         { icon: 'flag', title: l('ملخص الخروج', 'Discharge summary'), sub: stage >= STAGE.complete ? l('اكتملت الرحلة', 'Journey complete') : l('قيد الاعتماد', 'Pending approval'), screen: 'discharge' },
-        { icon: 'pin', title: l('الطريق إلى الصيدلية', 'Route to pharmacy'), sub: l('الطابق الأرضي', 'Ground floor'), dest: 'pharmacy' },
+        { icon: 'pin', title: l('أين الصيدلية؟', 'Where is the pharmacy?'), sub: l('غير موضحة في المخططات — اسأل الاستقبال', 'Not on the plans — ask reception'), dest: 'pharmacy' },
       ];
   }
 }
@@ -55,7 +55,7 @@ export function suggestedDest(stage: number): DestId {
   if (stage <= STAGE.consultation) return 'clinics';
   if (stage === STAGE.exams) return 'lab';
   if (stage === STAGE.results) return 'clinics';
-  return 'pharmacy';
+  return 'reception';
 }
 
 /** Correct Arabic number agreement for "your turn is after N patients". */

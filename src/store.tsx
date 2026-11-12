@@ -1,20 +1,23 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { STAGE, type DestId, type ExamStatus, type L, type ScreenId } from './data/content';
+import type { CatId, Req } from './data/inpatient';
 
 export type Lang = 'ar' | 'en';
 export type Scene = 'story' | 'app' | 'closing';
 export type Role = 'patient' | 'companion';
+export type TextSize = 'standard' | 'large' | 'xl';
+export type Display = 'standard' | 'contrast' | 'dark';
 export type A11y = {
-  voiceGuide: boolean; // Rafiq speaks in response to your actions (e.g. route directions)
-  autoRead: boolean; // read each page's explanation automatically when it opens
-  large: boolean;
-  contrast: boolean;
+  voiceGuide: boolean; // when voice assistance is on: Rafiq speaks in response to your actions (e.g. route directions)
+  autoRead: boolean; // when voice assistance is on: read each page's explanation automatically when it opens
+  textSize: TextSize; // standard / large / extra-large text
+  display: Display; // standard brand look / high contrast / dark (night) mode
   simple: boolean;
   motion: boolean; // reduce motion
   labels: boolean; // show text labels on icon-only buttons
   announce: boolean; // screen-reader live announcements
 };
-export const A11Y_DEFAULT: A11y = { voiceGuide: true, autoRead: false, large: false, contrast: false, simple: false, motion: false, labels: false, announce: true };
+export const A11Y_DEFAULT: A11y = { voiceGuide: true, autoRead: false, textSize: 'standard', display: 'standard', simple: false, motion: false, labels: false, announce: true };
 
 type Queue = { ahead: number; serving: number; mine: number };
 
@@ -63,6 +66,15 @@ type Ctx = {
   discovered: string[];
   discover: (id: string) => void;
 
+  // Inpatient requests (simulated)
+  admitted: boolean;
+  setAdmitted: (v: boolean) => void;
+  requests: Req[];
+  submitRequest: (item: string) => number;
+  advanceRequest: (id: number) => void;
+  inpatientCat: CatId | null;
+  openInpatient: (cat: CatId | null) => void;
+
   focus: number | null;
   setFocus: (n: number | null) => void;
 
@@ -87,7 +99,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [liveMsg, setLiveMsg] = useState('');
   const [a11y, setA11yState] = useState<A11y>(() => {
     try {
-      return { ...A11Y_DEFAULT, ...JSON.parse(localStorage.getItem('rafiq-a11y') || '{}') };
+      const saved = JSON.parse(localStorage.getItem('rafiq-a11y') || '{}');
+      // migrate the earlier on/off switches to the new text-size and display options
+      if (saved.textSize === undefined && saved.large) saved.textSize = 'large';
+      if (saved.display === undefined && saved.contrast) saved.display = 'contrast';
+      delete saved.large;
+      delete saved.contrast;
+      const a = { ...A11Y_DEFAULT, ...saved } as A11y;
+      if (!['standard', 'large', 'xl'].includes(a.textSize)) a.textSize = 'standard';
+      if (!['standard', 'contrast', 'dark'].includes(a.display)) a.display = 'standard';
+      return a;
     } catch {
       return A11Y_DEFAULT;
     }
@@ -108,6 +129,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [mapDest, setMapDest] = useState<DestId | null>(null);
   const [discovered, setDiscovered] = useState<string[]>([]);
   const [focus, setFocus] = useState<number | null>(null);
+  const [admitted, setAdmitted] = useState(false);
+  const [requests, setRequests] = useState<Req[]>([]);
+  const [inpatientCat, setInpatientCat] = useState<CatId | null>(null);
 
   const dir = lang === 'ar' ? 'rtl' : 'ltr';
   useEffect(() => {
@@ -136,8 +160,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, []);
   useEffect(() => {
     const c = document.documentElement.classList;
-    c.toggle('a11y-large', a11y.large);
-    c.toggle('a11y-contrast', a11y.contrast);
+    c.toggle('a11y-large', a11y.textSize === 'large');
+    c.toggle('a11y-xl', a11y.textSize === 'xl');
+    c.toggle('a11y-contrast', a11y.display === 'contrast');
+    c.toggle('a11y-dark', a11y.display === 'dark');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', a11y.display === 'dark' ? '#140a24' : a11y.display === 'contrast' ? '#000000' : '#4B1D7A');
     c.toggle('a11y-simple', a11y.simple);
     c.toggle('a11y-motion', a11y.motion);
     c.toggle('a11y-labels', a11y.labels);
@@ -192,6 +219,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const go = useCallback((s: ScreenId) => {
     setExplainOpen(false);
+    if (s === 'inpatient') setInpatientCat(null);
     setNav((n) => (n[n.length - 1] === s ? n : [...n, s]));
   }, []);
   const tab = useCallback((s: ScreenId) => {
@@ -206,6 +234,23 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     (d: DestId | null) => {
       setMapDest(d);
       go('map');
+    },
+    [go]
+  );
+
+  const submitRequest = useCallback((item: string) => {
+    const id = Date.now();
+    const at = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    setRequests((r) => [{ id, item, status: 0, at }, ...r]);
+    return id;
+  }, []);
+  const advanceRequest = useCallback((id: number) => {
+    setRequests((r) => r.map((x) => (x.id === id ? { ...x, status: Math.min(3, x.status + 1) } : x)));
+  }, []);
+  const openInpatient = useCallback(
+    (cat: CatId | null) => {
+      go('inpatient');
+      setInpatientCat(cat);
     },
     [go]
   );
@@ -229,6 +274,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setDiscovered([]);
     setExplainOpen(false);
     setRole('patient');
+    setAdmitted(false);
+    setRequests([]);
+    setInpatientCat(null);
     setStoryIdx(0);
     setScene('story');
   }, [setStage]);
@@ -271,11 +319,18 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       openMap,
       discovered,
       discover,
+      admitted,
+      setAdmitted,
+      requests,
+      submitRequest,
+      advanceRequest,
+      inpatientCat,
+      openInpatient,
       focus,
       setFocus,
       restart,
     }),
-    [lang, t, dir, scene, goScene, storyIdx, role, a11y, setA11y, announce, liveMsg, presentation, setPresentation, explainOpen, loggedIn, stage, setStage, queue, advanceQueue, blood, advanceBlood, examStatus, nav, go, tab, back, mapDest, openMap, discovered, discover, focus, restart]
+    [lang, t, dir, scene, goScene, storyIdx, role, a11y, setA11y, announce, liveMsg, presentation, setPresentation, explainOpen, loggedIn, stage, setStage, queue, advanceQueue, blood, advanceBlood, examStatus, nav, go, tab, back, mapDest, openMap, discovered, discover, admitted, requests, submitRequest, advanceRequest, inpatientCat, openInpatient, focus, restart]
   );
 
   return <C.Provider value={value}>{children}</C.Provider>;

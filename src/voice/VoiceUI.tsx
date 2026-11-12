@@ -15,10 +15,15 @@ export function Waveform({ bars = 22, state, className = '' }: { bars?: number; 
   );
 }
 
-/** "Listen to this page" — large, clear button for spoken explanations. */
-export function ListenBar({ line, label }: { line: Utterance | Utterance[]; label?: ReturnType<typeof l> }) {
+/**
+ * "Listen to this page" — large, clear button for spoken explanations.
+ * Voice assistance is optional: while it is off the bar is hidden, unless `always` is set
+ * (e.g. a medication's speaker button) — tapping it then turns voice on and plays at once.
+ */
+export function ListenBar({ line, label, always = false }: { line: Utterance | Utterance[]; label?: ReturnType<typeof l>; always?: boolean }) {
   const { t } = useStore();
   const v = useVoice();
+  if (!v.enabled && !always) return null;
   const key = Array.isArray(line) ? `list:${line.map((x) => (typeof x === 'string' ? x : x.id)).join(',')}` : typeof line === 'string' ? line : line.id ?? 'custom';
   const mine = v.isPlaying(key);
   const text = t(label ?? l('اسمع شرح هذه الصفحة', 'Listen to this page'));
@@ -26,7 +31,7 @@ export function ListenBar({ line, label }: { line: Utterance | Utterance[]; labe
     <div className={`listen ${mine ? 'is-on' : ''}`}>
       <button
         className="listen__main"
-        onClick={() => (mine ? (v.status === 'playing' ? v.pause() : v.resume()) : v.speak(line, key))}
+        onClick={() => (mine ? (v.status === 'playing' ? v.pause() : v.resume()) : v.speakNow(line, key))}
         aria-label={mine ? (v.status === 'playing' ? t(l('إيقاف مؤقت', 'Pause')) : t(l('متابعة', 'Resume'))) : text}
         aria-pressed={mine}
       >

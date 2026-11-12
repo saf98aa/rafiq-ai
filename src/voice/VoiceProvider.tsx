@@ -8,6 +8,8 @@ import manifestJson from '../data/voice-manifest.json';
  * - Plays pre-recorded Saudi-Arabic / English lines (ElevenLabs, recorded offline — no API key on the website).
  * - Falls back to the browser's speech synthesis when a line has no recording, or the recording cannot play.
  * - One voice at a time, with play / pause / resume / stop / replay, speed and voice-language selection.
+ * - Optional: voice assistance is OFF until the user turns it on (nothing plays automatically on arrival).
+ *   While it is off, speak() does nothing; `speakNow()` is for explicit taps that turn it on and play at once.
  */
 export const lines = linesJson as Record<string, L>;
 const manifest = manifestJson as Record<string, { ar?: string; en?: string }>;
@@ -19,6 +21,11 @@ export type VoiceStatus = 'idle' | 'playing' | 'paused';
 export const RATES = [0.8, 1, 1.2] as const;
 
 type Ctx = {
+  /** voice assistance switched on by the user (persisted on this device) */
+  enabled: boolean;
+  setEnabled: (v: boolean) => void;
+  /** an explicit user tap: switch voice assistance on and play straight away */
+  speakNow: (u: Utterance | Utterance[], key?: string) => void;
   status: VoiceStatus;
   current: Item | null;
   playlistKey: string | null;
@@ -67,6 +74,14 @@ export function VoiceProvider({ uiLang, children }: { uiLang: VoiceLang; childre
       return 1;
     }
   });
+  const [enabled, setEnabledState] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('rafiq-voice-on') === 'on';
+    } catch {
+      return false;
+    }
+  });
+  const enabledRef = useRef(enabled);
   const [voiceLang, setVoiceLangState] = useState<VoiceLang>(uiLang);
   const [engine, setEngine] = useState<Ctx['engine']>(null);
   const audio = useRef<HTMLAudioElement | null>(null);
@@ -152,6 +167,7 @@ export function VoiceProvider({ uiLang, children }: { uiLang: VoiceLang; childre
 
   const speak = useCallback(
     (u: Utterance | Utterance[], key?: string) => {
+      if (!enabledRef.current) return;
       const list = (Array.isArray(u) ? u : [u]).map(toItem).filter(Boolean) as Item[];
       if (!list.length) return;
       const k = key ?? list[0].key;
@@ -161,6 +177,32 @@ export function VoiceProvider({ uiLang, children }: { uiLang: VoiceLang; childre
       playItem(list, 0);
     },
     [playItem]
+  );
+
+  const setEnabled = useCallback(
+    (v: boolean) => {
+      enabledRef.current = v;
+      setEnabledState(v);
+      try {
+        localStorage.setItem('rafiq-voice-on', v ? 'on' : 'off');
+      } catch {
+        /* ignore */
+      }
+      if (!v) {
+        hardStop();
+        setStatus('idle');
+        setEngine(null);
+        setPlaylistKey(null);
+      }
+    },
+    [hardStop]
+  );
+  const speakNow = useCallback(
+    (u: Utterance | Utterance[], key?: string) => {
+      if (!enabledRef.current) setEnabled(true);
+      speak(u, key);
+    },
+    [setEnabled, speak]
   );
 
   const pause = useCallback(() => {
@@ -185,7 +227,7 @@ export function VoiceProvider({ uiLang, children }: { uiLang: VoiceLang; childre
   }, [hardStop]);
 
   const replay = useCallback(() => {
-    if (!last.current) return;
+    if (!last.current || !enabledRef.current) return;
     setQueue(last.current.list);
     setPlaylistKey(last.current.key);
     playItem(last.current.list, 0);
@@ -246,8 +288,8 @@ export function VoiceProvider({ uiLang, children }: { uiLang: VoiceLang; childre
   const isPlaying = useCallback((key: string) => status !== 'idle' && playlistKey === key, [status, playlistKey]);
 
   const value = useMemo<Ctx>(
-    () => ({ status, current, playlistKey, caption, rate, setRate, voiceLang, setVoiceLang, engine, speak, pause, resume, stop, replay, isPlaying, supported }),
-    [status, current, playlistKey, caption, rate, setRate, voiceLang, setVoiceLang, engine, speak, pause, resume, stop, replay, isPlaying, supported]
+    () => ({ enabled, setEnabled, speakNow, status, current, playlistKey, caption, rate, setRate, voiceLang, setVoiceLang, engine, speak, pause, resume, stop, replay, isPlaying, supported }),
+    [enabled, setEnabled, speakNow, status, current, playlistKey, caption, rate, setRate, voiceLang, setVoiceLang, engine, speak, pause, resume, stop, replay, isPlaying, supported]
   );
   return <C.Provider value={value}>{children}</C.Provider>;
 }

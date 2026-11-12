@@ -36,12 +36,12 @@
     "en": "There are no results yet. They will appear here after your tests."
   },
   "screen.meds": {
-    "ar": "سأساعدك على الاستماع إلى التعليمات المسجلة الخاصة بأدويتك.",
-    "en": "I'll help you listen to the recorded instructions for your medications."
+    "ar": "هذا دليلك الدوائي. يشرح لك الصيدلي سليمان لكل دواء: لماذا تأخذه، والجرعة، ومتى، وما الذي تتجنّبه — من الوصفة والنشرة المعتمدة فقط. هذه بيانات تجريبية.",
+    "en": "This is your Medication Guide. Pharmacist Suleiman explains each medicine: why you take it, the dose, when, and what to avoid — only from the prescription and approved information. This is demo data."
   },
   "screen.map": {
-    "ar": "يمكنني مساعدتك في الوصول إلى القسم الذي تبحث عنه. اختر وجهتك وسأوضح لك المسار.",
-    "en": "I can help you reach the department you're looking for. Choose your destination and I'll show you the way."
+    "ar": "يمكنني مساعدتك في الوصول إلى القسم الذي تبحث عنه. اختر الدور، ثم اختر وجهتك وسأوضح لك المسار.",
+    "en": "I can help you reach the department you're looking for. Choose the floor, then your destination, and I'll show you the way."
   },
   "screen.discharge": {
     "ar": "هذه صفحة الخروج. تجد فيها ملخص زيارتك، وتعليمات فريق الرعاية، وموعد المتابعة.",
@@ -59,7 +59,6 @@
     "ar": "هذه إعدادات الوصول الميسر. يمكنك تكبير الخط، وزيادة التباين، وتبسيط الواجهة، وتشغيل الإرشاد الصوتي.",
     "en": "These are the accessibility settings. You can enlarge the text, increase contrast, simplify the interface, and turn on voice guidance."
   },
-
   "where.0": {
     "ar": "توجّه الآن إلى الاستقبال لتسجيل زيارتك. اختر الاستقبال في الخريطة وسأوضح لك المسار.",
     "en": "Please head to reception to register your visit. Choose reception on the map and I'll show you the way."
@@ -77,8 +76,8 @@
     "en": "Stay in the waiting hall. I'll let you know when it's your turn, and then you'll head to the clinics area."
   },
   "where.4": {
-    "ar": "توجّه الآن إلى منطقة العيادات، لموعدك مع الدكتورة سارة العتيبي.",
-    "en": "Please go to the clinics area now, for your appointment with Doctor Sara Alotaibi."
+    "ar": "توجّه الآن إلى منطقة العيادات، لموعدك مع الدكتورة يسرى زكريا.",
+    "en": "Please go to the clinics area now, for your appointment with Doctor Yusra Zakaria."
   },
   "where.5": {
     "ar": "توجّه إلى قسم عينات المعامل لسحب عينة التحليل. اختره في الخريطة وسأوضح لك المسار.",
@@ -96,72 +95,102 @@
     "ar": "اكتملت زيارتك. تقدر تغادر الآن، وتبقى تعليماتك محفوظة في رفيق.",
     "en": "Your visit is complete. You can leave now, and your instructions stay saved in Rafiq."
   },
-
-  "next.0": { "ar": "خطوتك التالية هي التسجيل في الاستقبال.", "en": "Your next step is registering at reception." },
-  "next.1": { "ar": "خطوتك التالية هي التقييم التمريضي.", "en": "Your next step is the nursing assessment." },
-  "next.2": { "ar": "بعد التقييم التمريضي، تنتظر دورك مع الطبيبة.", "en": "After the nursing assessment, you'll wait for your turn with the doctor." },
-  "next.3": {
-    "ar": "خطوتك التالية هي الاستشارة مع الدكتورة سارة العتيبي، عندما يحين دورك.",
-    "en": "Your next step is the consultation with Doctor Sara Alotaibi, when your turn comes."
+  "next.0": {
+    "ar": "خطوتك التالية هي التسجيل في الاستقبال.",
+    "en": "Your next step is registering at reception."
   },
-  "next.4": { "ar": "بعد الاستشارة، تُجري الفحوصات التي تطلبها الطبيبة.", "en": "After the consultation, you'll have the tests your doctor requests." },
-  "next.5": { "ar": "بعد اكتمال الفحوصات، ننتظر صدور النتائج.", "en": "Once your tests are complete, we wait for the results." },
+  "next.1": {
+    "ar": "خطوتك التالية هي التقييم التمريضي.",
+    "en": "Your next step is the nursing assessment."
+  },
+  "next.2": {
+    "ar": "بعد التقييم التمريضي، تنتظر دورك مع الطبيبة.",
+    "en": "After the nursing assessment, you'll wait for your turn with the doctor."
+  },
+  "next.3": {
+    "ar": "خطوتك التالية هي الاستشارة مع الدكتورة يسرى زكريا، عندما يحين دورك.",
+    "en": "Your next step is the consultation with Doctor Yusra Zakaria, when your turn comes."
+  },
+  "next.4": {
+    "ar": "بعد الاستشارة، تُجري الفحوصات التي تطلبها الطبيبة.",
+    "en": "After the consultation, you'll have the tests your doctor requests."
+  },
+  "next.5": {
+    "ar": "بعد اكتمال الفحوصات، ننتظر صدور النتائج.",
+    "en": "Once your tests are complete, we wait for the results."
+  },
   "next.6": {
     "ar": "خطوتك التالية مناقشة النتائج مع طبيبتك، ثم استلام إرشادات الأدوية.",
     "en": "Your next step is discussing the results with your doctor, then receiving your medication guidance."
   },
-  "next.7": { "ar": "خطوتك التالية استلام أدويتك من الصيدلية، ثم إنهاء الزيارة.", "en": "Your next step is collecting your medications from the pharmacy, then finishing your visit." },
-  "next.8": { "ar": "اكتملت رحلتك اليوم. راجع موعد المتابعة في ملخص الخروج.", "en": "Your journey is complete for today. Check your follow-up appointment in the discharge summary." },
-
+  "next.7": {
+    "ar": "خطوتك التالية استلام أدويتك من الصيدلية، ثم إنهاء الزيارة.",
+    "en": "Your next step is collecting your medications from the pharmacy, then finishing your visit."
+  },
+  "next.8": {
+    "ar": "اكتملت رحلتك اليوم. راجع موعد المتابعة في ملخص الخروج.",
+    "en": "Your journey is complete for today. Check your follow-up appointment in the discharge summary."
+  },
   "queue.3": {
     "ar": "دورك بعد ثلاثة مرضى، والوقت المتوقع حوالي خمس عشرة دقيقة. هذا تقدير تقريبي.",
     "en": "There are three patients ahead of you. The estimated wait is about fifteen minutes. This is only an estimate."
   },
-  "queue.2": { "ar": "دورك بعد مريضَين، والوقت المتوقع حوالي عشر دقائق.", "en": "There are two patients ahead of you. The estimated wait is about ten minutes." },
-  "queue.1": { "ar": "دورك بعد مريض واحد. استعد، الوقت المتوقع حوالي خمس دقائق.", "en": "There is one patient ahead of you. Get ready, it should be about five minutes." },
-  "queue.0": { "ar": "حان دورك! توجّه الآن إلى منطقة العيادات.", "en": "It's your turn! Please go to the clinics area now." },
-  "queue.none": { "ar": "انتهت مرحلة الانتظار، ولا يوجد لديك دور حاليًا.", "en": "The waiting stage is over, and you are not in a queue right now." },
-
+  "queue.2": {
+    "ar": "دورك بعد مريضَين، والوقت المتوقع حوالي عشر دقائق.",
+    "en": "There are two patients ahead of you. The estimated wait is about ten minutes."
+  },
+  "queue.1": {
+    "ar": "دورك بعد مريض واحد. استعد، الوقت المتوقع حوالي خمس دقائق.",
+    "en": "There is one patient ahead of you. Get ready, it should be about five minutes."
+  },
+  "queue.0": {
+    "ar": "حان دورك! توجّه الآن إلى منطقة العيادات.",
+    "en": "It's your turn! Please go to the clinics area now."
+  },
+  "queue.none": {
+    "ar": "انتهت مرحلة الانتظار، ولا يوجد لديك دور حاليًا.",
+    "en": "The waiting stage is over, and you are not in a queue right now."
+  },
   "results.none": {
     "ar": "لم تُطلب لك فحوصات بعد. ستظهر النتائج هنا بعد الاستشارة والفحوصات.",
     "en": "No tests have been requested yet. Results will appear here after your consultation and tests."
   },
-  "results.pending": { "ar": "لم تصدر نتائج التحليل بعد. سأخبرك فور صدورها.", "en": "Your test results are not out yet. I'll tell you as soon as they are." },
+  "results.pending": {
+    "ar": "لم تصدر نتائج التحليل بعد. سأخبرك فور صدورها.",
+    "en": "Your test results are not out yet. I'll tell you as soon as they are."
+  },
   "results.ready": {
     "ar": "نعم، صدرت نتائجك. تقدر تشوف حالتها في رفيق، وطبيبتك هي من تشرح لك تفاصيلها.",
     "en": "Yes, your results are out. You can see their status in Rafiq, and your doctor will explain the details."
   },
-
   "ans.pharmacy": {
-    "ar": "الصيدلية في طابق القبو حسب مخطط المستشفى. أعرض لك موقعها في الخريطة، واسأل الاستقبال عن أقرب مصعد.",
-    "en": "According to the hospital plan, the pharmacy is on the basement floor. I'll show you its location on the map; ask reception for the nearest lift."
+    "ar": "الصيدلية لا تظهر في مخططَي الدور الأرضي والدور الأول، لذلك لا أستطيع تحديد مكانها. اسأل موظفي الاستقبال عن مكان الصيدلية.",
+    "en": "The pharmacy does not appear on the ground-floor or first-floor plan, so I can't show where it is. Please ask the reception staff."
   },
-
   "route.reception": {
-    "ar": "للوصول إلى الاستقبال وملفات الزوار، اتبع المسار الموضح على الخريطة. الاستقبال في الطابق الأرضي، بجوار الصالة التي أنت فيها.",
-    "en": "To reach reception and visitor files, follow the route shown on the map. Reception is on the ground floor, next to the hall you are in."
+    "ar": "الاستقبال وملفات الزوار في الدور الأرضي، أمام موقعك التجريبي مباشرة. اتبع المسار الموضح على الخريطة.",
+    "en": "Reception and visitor records are on the ground floor, right in front of your demo location. Follow the route shown on the map."
   },
   "route.clinics": {
-    "ar": "للوصول إلى منطقة العيادات، اتبع المسار الموضح على الخريطة. العيادات في الطابق الأرضي.",
-    "en": "To reach the clinics area, follow the route shown on the map. The clinics are on the ground floor."
+    "ar": "العيادات في الدور الأرضي. اتبع المسار الموضح على الخريطة: عبر الممر بجوار الاستقبال، ثم عبر الصالة حتى باب العيادة.",
+    "en": "The clinics are on the ground floor. Follow the route on the map: along the corridor beside reception, then through the hall to the clinic entrance."
   },
   "route.lab": {
-    "ar": "للوصول إلى المختبر، اتبع المسار الموضح على الخريطة. قسم عينات المعامل في الطابق الأرضي، بجوار الاستقبال والصالة الوسطى.",
-    "en": "To reach the lab, follow the route shown on the map. Lab samples is on the ground floor, next to reception and the central hall."
+    "ar": "قسم عينات المعامل في الدور الأرضي، بجوار الاستقبال. اتبع المسار الموضح على الخريطة عبر الممر بين الاستقبال والمختبر.",
+    "en": "Laboratory samples is on the ground floor, next to reception. Follow the route on the map along the corridor between reception and the lab."
   },
   "route.radiology": {
-    "ar": "للوصول إلى غرف الموجات فوق الصوتية، اتبع المسار الموضح على الخريطة. القسم في الطابق الأرضي، بجوار الصالة الوسطى.",
-    "en": "To reach the ultrasound rooms, follow the route shown on the map. They are on the ground floor, next to the central hall."
+    "ar": "غرف التصوير التخصصي في الدور الأرضي. اتبع المسار الموضح على الخريطة: عبر الممر بجوار الاستقبال، ثم عبر الصالة إلى الممر المؤدي لغرف التصوير.",
+    "en": "The specialized imaging rooms are on the ground floor. Follow the route on the map: along the corridor beside reception, then through the hall to the corridor leading to imaging."
   },
   "route.er": {
-    "ar": "طوارئ الأطفال والنساء في الطابق الأرضي، ولها مدخل طوارئ خارجي. اتبع المسار الموضح على الخريطة.",
-    "en": "The children's and women's emergency is on the ground floor, with its own emergency entrance. Follow the route shown on the map."
+    "ar": "طوارئ النساء في الدور الأرضي، ولها مدخل طوارئ خارجي كما يظهر في المخطط. اتبع المسار الموضح على الخريطة.",
+    "en": "Women's emergency is on the ground floor, with its own emergency entrance as shown on the plan. Follow the route on the map."
   },
   "route.pharmacy": {
-    "ar": "الصيدلية في طابق القبو حسب المخطط. المخطط لا يوضح الطريق بين الطوابق، لذلك أعرض لك موقعها فقط. اسأل الاستقبال عن أقرب مصعد.",
-    "en": "According to the plan, the pharmacy is on the basement floor. The plan does not show the way between floors, so I'm only showing its location. Ask reception for the nearest lift."
+    "ar": "الصيدلية لا تظهر في مخططَي الدور الأرضي والدور الأول، لذلك لا أعرض لها موقعًا أو مسارًا. اسأل موظفي الاستقبال عن مكان الصيدلية.",
+    "en": "The pharmacy does not appear on the ground-floor or first-floor plan, so I'm not showing a location or route. Please ask the reception staff."
   },
-
   "med.intro": {
     "ar": "سأقرأ لك تعليمات أدويتك كما سجّلها فريق الرعاية. هذه بيانات تجريبية للعرض.",
     "en": "I'll read your medication instructions as your care team recorded them. This is demo data."
@@ -178,28 +207,160 @@
     "ar": "إذا عندك أي سؤال عن أدويتك، اسأل الصيدلي قبل أن تغادر.",
     "en": "If you have any question about your medications, ask the pharmacist before you leave."
   },
-
-  "vc.hello": { "ar": "أهلًا، أنا رفيق. كيف أقدر أساعدك؟", "en": "Hi, I'm Rafiq. How can I help you?" },
+  "vc.hello": {
+    "ar": "أهلًا، أنا رفيق. كيف أقدر أساعدك؟",
+    "en": "Hi, I'm Rafiq. How can I help you?"
+  },
   "vc.unknown": {
     "ar": "عذرًا، ما فهمت سؤالك. جرّب أحد الأسئلة المقترحة.",
     "en": "Sorry, I didn't catch that. Try one of the suggested questions."
   },
-
   "story.meet": {
-    "ar": "أهلًا محمد، أنا رفيق. أنت الآن في مرحلة انتظار الطبيب، ودورك بعد ثلاثة مرضى.",
-    "en": "Hello Mohammed, I'm Rafiq. You're now waiting for the doctor, and there are three patients ahead of you."
+    "ar": "أهلًا عامر، أنا رفيق. أنت الآن في مرحلة انتظار الطبيب، ودورك بعد ثلاثة مرضى.",
+    "en": "Hello Amer, I'm Rafiq. You're now waiting for the doctor, and there are three patients ahead of you."
   },
   "story.voice": {
-    "ar": "لا تشيل هم، أنا معك. بعد الانتظار تقابل الدكتورة سارة، وأنا أنبّهك أول ما يجي دورك.",
-    "en": "Don't worry, I'm with you. After the wait you'll see Doctor Sara, and I'll let you know the moment it's your turn."
+    "ar": "لا تشيل هم، أنا معك. بعد الانتظار تقابل الدكتورة يسرى، وأنا أنبّهك أول ما يجي دورك.",
+    "en": "Don't worry, I'm with you. After the wait you'll see Doctor Yusra, and I'll let you know the moment it's your turn."
   },
   "story.exams": {
-    "ar": "عندك فحصين: عينة دم في عينات المعامل، وتصوير بالموجات فوق الصوتية. أدلّك على مكان كل واحد منهم.",
-    "en": "You have two tests: a blood sample at lab samples, and an ultrasound scan. I'll guide you to each one."
+    "ar": "عندك فحصين: عينة دم في عينات المعامل، وتصوير بالأشعة في غرف التصوير. أدلّك على مكان كل واحد منهم.",
+    "en": "You have two tests: a blood sample at lab samples, and an X-ray in the imaging rooms. I'll guide you to each one."
   },
   "story.results": {
     "ar": "صدرت نتائجك. طبيبتك هي من تشرح لك تفاصيلها، وأنا أوضح لك الخطوة التالية.",
     "en": "Your results are out. Your doctor will explain the details, and I'll show you the next step."
   },
-  "story.done": { "ar": "اكتملت رحلتك الصحية. شكرًا لثقتك برفيق.", "en": "Your healthcare journey is complete. Thank you for trusting Rafiq." }
+  "story.done": {
+    "ar": "اكتملت رحلتك الصحية. شكرًا لثقتك برفيق.",
+    "en": "Your healthcare journey is complete. Thank you for trusting Rafiq."
+  },
+  "story.inpatient": {
+    "ar": "وإذا احتجت للتنويم، أنا معك. اطلب مساعدة التمريض أو جلسة العلاج الطبيعي من خطة رعايتك، وأخبرك بحالة طلبك أولًا بأول.",
+    "en": "And if you need to stay in hospital, I'm with you. Ask for nursing help or a physical therapy session from your care plan, and I'll keep you updated on your request."
+  },
+  "route.pedsClinic": {
+    "ar": "عيادة الأطفال في الدور الأرضي. اتبع المسار الموضح على الخريطة عبر الصالة، ثم الممر المحاذي للمختبر.",
+    "en": "The pediatric clinic is on the ground floor. Follow the route on the map through the hall, then along the corridor beside the lab."
+  },
+  "route.pedsEr": {
+    "ar": "طوارئ الأطفال في الدور الأرضي، بجوار مدخل الأطفال ومدخل الطوارئ. اتبع المسار الموضح على الخريطة.",
+    "en": "Pediatric emergency is on the ground floor, near the children's entrance and the emergency entrance. Follow the route on the map."
+  },
+  "route.wards": {
+    "ar": "غرف الأطفال والنساء في الدور الأول. يبدأ المسار من المصعد الموضح في مخطط الدور الأول عبر الممرات. مخطط الدور الأرضي لا يحدد المصاعد، فاسأل الاستقبال عن أقرب مصعد.",
+    "en": "Pediatric and women's rooms are on the first floor. The route starts at the elevator marked on the first-floor plan and follows its corridors. The ground-floor plan doesn't mark the elevators, so ask reception for the nearest one."
+  },
+  "route.or": {
+    "ar": "العمليات الجراحية في الدور الأول، بجوار المصعد الموضح في المخطط. اتبع المسار الموضح على الخريطة.",
+    "en": "The operating rooms are on the first floor, next to the elevator marked on the plan. Follow the route on the map."
+  },
+  "route.nicu": {
+    "ar": "غرف حديثي الولادة في الدور الأول. يبدأ المسار من المصعد الموضح في المخطط، عبر الممر الرئيسي حتى القسم.",
+    "en": "The neonatal rooms are on the first floor. The route starts at the elevator marked on the plan and follows the main corridor to the unit."
+  },
+  "route.delivery": {
+    "ar": "غرف الولادة في الدور الأول. يبدأ المسار من المصعد الموضح في المخطط، عبر الممر الرئيسي ثم الممر المؤدي إلى غرف الولادة.",
+    "en": "The delivery rooms are on the first floor. The route starts at the elevator marked on the plan, along the main corridor, then the corridor leading to delivery."
+  },
+  "screen.inpatient": {
+    "ar": "هذه طلبات التنويم. اختر نوع المساعدة التي تحتاجها: التمريض، أو العلاج الطبيعي، أو خدمات أخرى. تظهر لك فقط الخدمات المدرجة في خطة رعايتك.",
+    "en": "These are your inpatient requests. Choose the kind of help you need: nursing, physical therapy, or other services. You only see the services in your care plan."
+  },
+  "ans.notadmitted": {
+    "ar": "طلبات التنويم تظهر بعد تنويم المريض. في هذه الزيارة التجريبية، تقدر تجرّب محاكاة التنويم من صفحة طلبات التنويم.",
+    "en": "Inpatient requests appear once the patient is admitted. In this demo visit, you can try the admission simulation on the inpatient requests page."
+  },
+  "ans.nurse": {
+    "ar": "أقدر أساعدك في طلب التمريض. المتاح لك حسب خطة رعايتك: مساعدة تمريضية، أو مساعدة في الاحتياجات الأساسية، أو الإبلاغ عن انزعاج أو تغيّر في شعورك، أو خدمة تمريضية معتمدة. اختر الطلب ثم أكّد الإرسال. وإذا كان الأمر عاجلًا، اضغط زر استدعاء التمريض بجانب سريرك.",
+    "en": "I can help you ask the nursing team. Based on your care plan, you can request nursing assistance, help with basic needs, report discomfort or a change in how you feel, or an approved nursing service. Choose the request, then confirm. If it's urgent, press the nurse-call button by your bed."
+  },
+  "ans.pt": {
+    "ar": "جلسات العلاج الطبيعي مدرجة في خطة رعايتك. تقدر تطلب جلسة، أو مساعدة في جلستك المجدولة، أو تسأل عن موعد جلستك القادمة. اختر الطلب ثم أكّد الإرسال.",
+    "en": "Physical therapy is part of your care plan. You can request a session, get help with your scheduled session, or ask about your next one. Choose the request, then confirm."
+  },
+  "inp.cat.other": {
+    "ar": "الخدمات الأخرى في خطة رعايتك: التغذية العلاجية، والخدمة الاجتماعية، والمساعدة في خدمة أو موعد قائم. اختر الطلب المناسب.",
+    "en": "Other services in your care plan: clinical nutrition, social services, and help with an existing service or appointment. Choose the one you need."
+  },
+  "inp.confirm": {
+    "ar": "راجع تفاصيل طلبك. إذا كانت صحيحة، اضغط على: إرسال الطلب.",
+    "en": "Please review your request. If it's correct, press Submit request."
+  },
+  "req.none": {
+    "ar": "لا توجد لديك طلبات حتى الآن. تقدر تطلب من صفحة طلبات التنويم، أو تقول لي: أحتاج مساعدة من التمريض.",
+    "en": "You don't have any requests yet. You can make one on the inpatient requests page, or just tell me: I need help from the nursing team."
+  },
+  "req.0": {
+    "ar": "نعم، تم إرسال طلبك الأخير، وسيُراجَع قريبًا. هذا في النموذج التجريبي فقط.",
+    "en": "Yes, your latest request has been submitted and will be reviewed soon. This is in the prototype only."
+  },
+  "req.1": {
+    "ar": "طلبك الأخير قيد المراجعة الآن.",
+    "en": "Your latest request is under review now."
+  },
+  "req.2": {
+    "ar": "طلبك الأخير جارٍ تنفيذه الآن.",
+    "en": "Your latest request is in progress now."
+  },
+  "req.3": {
+    "ar": "طلبك الأخير مكتمل.",
+    "en": "Your latest request is complete."
+  },
+  "guide.story": {
+    "ar": "دليلك الدوائي: يشرح الصيدلي سليمان الغرض من كل دواء، ومواعيده، واحتياطاته، من الوصفة والنشرة المعتمدة فقط. ورفيق لا يغيّر أي جرعة.",
+    "en": "Your Medication Guide: Pharmacist Suleiman explains what each medicine is for, when to take it and its precautions — only from the prescription and approved information. Rafiq never changes a dose."
+  },
+  "guide.intro": {
+    "ar": "سأوضح لك الغرض من الدواء وطريقة استخدامه حسب الوصفة المعتمدة.",
+    "en": "I will explain what this medicine is for and how to use it, according to your approved prescription."
+  },
+  "guide.nochange": {
+    "ar": "لا يغيّر رفيق ولا هذا الدليل أي جرعة. زيادة الجرعة أو إنقاصها أو إيقاف الدواء قرار طبيبك المعالج فقط. وإن كان لديك سؤال، فاسأل الصيدلي قبل أي خطوة.",
+    "en": "Neither Rafiq nor this guide changes any dose. Increasing, reducing or stopping a medicine is your treating doctor's decision only. If you have a question, ask the pharmacist first."
+  },
+  "guide.missed.none": {
+    "ar": "لا توجد تعليمات معتمدة للجرعة المنسية لهذا الدواء في الوصفة أو النشرة المستخدمة هنا. لا تخمّن، واسأل الصيدلي سليمان أو طبيبك.",
+    "en": "There are no approved missed-dose instructions for this medicine in the prescription or the information used here. Please do not guess — ask Pharmacist Suleiman or your doctor."
+  },
+  "guide.m1.use": {
+    "ar": "باراسيتامول، خمسمئة ملليغرام: مسكّن للألم الخفيف إلى المتوسط وخافض للحرارة. في وصفتك: لتخفيف الألم عند الحاجة.",
+    "en": "Paracetamol, five hundred milligrams: it relieves mild to moderate pain and reduces fever. On your prescription: to ease pain when needed."
+  },
+  "guide.m1.how": {
+    "ar": "الجرعة: قرص أو قرصان في المرة الواحدة، بالفم مع الماء، عند الحاجة فقط. اترك أربع ساعات على الأقل بين الجرعتين، ولا تتجاوز ثمانية أقراص خلال أربع وعشرين ساعة. لا توجد مواعيد ثابتة في الوصفة، ويمكن تناوله مع الطعام أو بدونه.",
+    "en": "The dose: one or two tablets at a time, by mouth with water, only when needed. Leave at least four hours between doses, and do not take more than eight tablets in twenty-four hours. There are no fixed times on the prescription, and it can be taken with or without food."
+  },
+  "guide.m1.care": {
+    "ar": "مهم: لا تتناوله مع أي دواء آخر يحتوي على باراسيتامول، مثل بعض أدوية البرد، وتجنّب الكحول، لأن تجاوز الجرعة قد يضر الكبد. وإن كنت تستخدم الوارفارين، فأخبر طبيبك.",
+    "en": "Important: do not take it with any other medicine that contains paracetamol, such as some cold remedies, and avoid alcohol, because too much can harm the liver. If you use warfarin, tell your doctor."
+  },
+  "guide.m2.use": {
+    "ar": "فيتامين د ثلاثة، خمسون ألف وحدة: يعالج نقص فيتامين د ويقي منه، وهو ضروري لصحة العظام.",
+    "en": "Vitamin D three, fifty thousand units: it treats and prevents vitamin D deficiency, which matters for healthy bones."
+  },
+  "guide.m2.how": {
+    "ar": "الجرعة: كبسولة واحدة مرة في الأسبوع، تُبلع كاملة مع الماء، ويُفضَّل مع وجبة. لم تحدد الوصفة يومًا أو وقتًا معيّنًا، فاسأل الصيدلي سليمان عن اليوم المناسب.",
+    "en": "The dose: one capsule once a week, swallowed whole with water, best with a meal. The prescription doesn't set a day or time, so ask Pharmacist Suleiman which day suits you."
+  },
+  "guide.m2.care": {
+    "ar": "أخبر طبيبك إن كان لديك ارتفاع في الكالسيوم أو حصوات أو مرض في الكلى، أو كنت تستخدم مدرّات البول من نوع الثيازيد أو الديجوكسين. ولا تضف مكمّلات أخرى فيها فيتامين د أو كالسيوم دون استشارة.",
+    "en": "Tell your doctor if you have high calcium, kidney stones or kidney disease, or if you take thiazide water tablets or digoxin. Don't add other vitamin D or calcium supplements without advice."
+  },
+  "guide.m3.use": {
+    "ar": "أوميبرازول، عشرون ملليغرامًا: يقلّل كمية الحمض في المعدة، ويُستخدم لحالات مثل قرحة المعدة والارتجاع الحمضي.",
+    "en": "Omeprazole, twenty milligrams: it reduces the acid your stomach makes, and is used for conditions such as stomach ulcers and acid reflux."
+  },
+  "guide.m3.how": {
+    "ar": "الجرعة: كبسولة واحدة مرة يوميًا، صباحًا قبل الإفطار، كما هو مكتوب في وصفتك. تُبلع كاملة مع الماء، ولا تُمضغ ولا تُسحق.",
+    "en": "The dose: one capsule once a day, in the morning before breakfast, as written on your prescription. Swallow it whole with water; do not chew or crush it."
+  },
+  "guide.m3.care": {
+    "ar": "أخبر الطبيب أو الصيدلي بكل أدويتك. تنصح النشرة بتجنّب استخدامه مع كلوبيدوقريل، وبتجنّب عشبة سانت جون والريفامبيسين. والاستخدام الطويل يحتاج إلى متابعة الطبيب.",
+    "en": "Tell your doctor or pharmacist about all your medicines. The label advises avoiding it with clopidogrel, and avoiding St John's wort and rifampicin. Long-term use needs your doctor's follow-up."
+  },
+  "guide.m3.missed": {
+    "ar": "إذا نسيت جرعة، تناولها حالما تتذكّر. وإذا اقترب موعد الجرعة التالية، اترك المنسية وتناول التالية في موعدها. لا تأخذ جرعتين معًا.",
+    "en": "If you miss a dose, take it as soon as you remember. If it is almost time for the next one, skip the missed dose and take the next at the usual time. Do not take two doses at once."
+  }
 }

@@ -4,13 +4,14 @@ import Icon from '../../components/Icon';
 import { Mark } from '../../components/Logo';
 import { l, type L } from '../../data/content';
 import { destById } from '../../data/blueprint';
+import { categories, type CatId } from '../../data/inpatient';
 import { useStore } from '../../store';
 import { answerFor, matchIntent, SUGGESTED, type Intent } from '../../voice/logic';
 import { lines, useVoice } from '../../voice/VoiceProvider';
 import { SpeedSelect, VoiceLangSelect, Waveform } from '../../voice/VoiceUI';
 import { Header, Notice } from '../ui';
 
-type Msg = { id: number; who: 'me' | 'rafiq'; text: L | string; dest?: ReturnType<typeof destById> };
+type Msg = { id: number; who: 'me' | 'rafiq'; text: L | string; dest?: ReturnType<typeof destById>; inpatient?: CatId | 'home' };
 
 // Minimal typing for the Web Speech API (not in TS DOM lib everywhere)
 type SR = {
@@ -31,12 +32,21 @@ const getSR = (): (new () => SR) | null => {
 
 /** Rafiq Voice Companion — "رفيق يتحدث معك". */
 export default function VoiceCompanion() {
-  const { t, stage, queue, openMap, go, lang } = useStore();
+  const { t, stage, queue, openMap, go, lang, admitted, requests, openInpatient } = useStore();
   const v = useVoice();
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [listening, setListening] = useState(false);
   const [heard, setHeard] = useState('');
   const [micError, setMicError] = useState<L | null>(null);
+  // the microphone is used only after the user explicitly agrees (then the browser asks its own permission)
+  const [micOk, setMicOk] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('rafiq-mic-ok') === 'yes';
+    } catch {
+      return false;
+    }
+  });
+  const [askMic, setAskMic] = useState(false);
   const rec = useRef<SR | null>(null);
   const seq = useRef(0);
   const scroller = useRef<HTMLDivElement>(null);
@@ -54,13 +64,17 @@ export default function VoiceCompanion() {
       v.speak('vc.unknown');
       return;
     }
-    const a = answerFor(intent, { stage, ahead: queue.ahead });
-    setMsgs((m) => [...m, me, { id: ++seq.current, who: 'rafiq', text: lines[a.line], dest: a.dest ? destById(a.dest) : undefined }]);
+    const a = answerFor(intent, { stage, ahead: queue.ahead, admitted, reqStatus: requests[0]?.status ?? null });
+    setMsgs((m) => [...m, me, { id: ++seq.current, who: 'rafiq', text: lines[a.line], dest: a.dest ? destById(a.dest) : undefined, inpatient: a.inpatient }]);
     v.speak(a.line);
   };
 
-  const startMic = () => {
+  const startMic = (agreed = false) => {
     setMicError(null);
+    if (!listening && !micOk && !agreed) {
+      setAskMic(true);
+      return;
+    }
     if (!SRClass) {
       setMicError(l('التعرّف على الصوت غير مدعوم في هذا المتصفح. اختر سؤالًا من الأسئلة المقترحة.', 'Speech recognition is not supported in this browser. Choose one of the suggested questions.'));
       return;
@@ -103,6 +117,17 @@ export default function VoiceCompanion() {
     }
   };
 
+  const allowMic = () => {
+    setMicOk(true);
+    setAskMic(false);
+    try {
+      localStorage.setItem('rafiq-mic-ok', 'yes');
+    } catch {
+      /* ignore */
+    }
+    startMic(true);
+  };
+
   const state = listening ? 'listening' : v.status === 'playing' ? 'speaking' : 'idle';
 
   return (
@@ -131,21 +156,22 @@ export default function VoiceCompanion() {
             className="vc__ctl"
             onClick={() => {
               setMsgs((m) => [...m, { id: ++seq.current, who: 'rafiq', text: lines['vc.hello'] }]);
-              v.speak('vc.hello');
+              v.speakNow('vc.hello');
             }}
-            aria-label={t(l('اسمع ترحيب رفيق', "Hear Rafiq's greeting"))}
+            aria-label={t(l('الاستماع إلى رفيق: اسمع ترحيبه', 'Listen to Rafiq: hear his greeting'))}
           >
             <Icon name="speaker" size={24} />
-            <span>{t(l('السمّاعة', 'Speaker'))}</span>
+            <span>{t(l('استمع', 'Listen'))}</span>
           </button>
           <motion.button
             className={`vc__mic ${listening ? 'is-on' : ''}`}
-            onClick={startMic}
+            onClick={() => startMic()}
             whileTap={{ scale: 0.94 }}
             aria-label={listening ? t(l('إيقاف الاستماع', 'Stop listening')) : t(l('تحدّث مع رفيق', 'Talk to Rafiq'))}
             aria-pressed={listening}
           >
             <Icon name={listening ? 'stop' : 'mic'} size={34} stroke={2} />
+            <span className="vc__miclbl">{listening ? t(l('إيقاف', 'Stop')) : t(l('تحدّث', 'Speak'))}</span>
           </motion.button>
           <button
             className="vc__ctl"
@@ -156,6 +182,54 @@ export default function VoiceCompanion() {
             <span>{v.status === 'playing' ? t(l('إيقاف مؤقت', 'Pause')) : v.status === 'paused' ? t(l('متابعة', 'Resume')) : t(l('إعادة', 'Replay'))}</span>
           </button>
         </div>
+        <div className="vc__modes" aria-hidden="true">
+          <span>
+            <Icon name="speaker" size={14} />
+            {t(l('استمع إلى رفيق: يقرأ الإجابة بصوت', 'Listen to Rafiq: he reads the answer aloud'))}
+          </span>
+          <span>
+            <Icon name="mic" size={14} />
+            {t(l('تحدّث إلى رفيق: الميكروفون بعد إذنك فقط', 'Speak to Rafiq: microphone only with your permission'))}
+          </span>
+        </div>
+        {askMic && (
+          <div className="screen__pad">
+            <div className="micask" role="dialog" aria-label={t(l('إذن الميكروفون', 'Microphone permission'))}>
+              <span className="micask__ic">
+                <Icon name="mic" size={22} />
+              </span>
+              <b>{t(l('هل تسمح لرفيق باستخدام الميكروفون؟', 'Allow Rafiq to use the microphone?'))}</b>
+              <p>
+                {t(
+                  l(
+                    'يُستخدم الميكروفون فقط أثناء ضغطك على زر «تحدّث» لفهم سؤالك، ثم يتوقف. سيطلب المتصفح إذنه أيضًا. يمكنك دائمًا اختيار سؤال مكتوب بدلًا من ذلك.',
+                    'The microphone is used only while you press “Speak”, to understand your question, and then it stops. Your browser will also ask for permission. You can always choose a written question instead.'
+                  )
+                )}
+              </p>
+              <div className="micask__btns">
+                <button className="btn btn--primary" onClick={allowMic}>
+                  <Icon name="mic" size={16} />
+                  {t(l('السماح والبدء', 'Allow and start'))}
+                </button>
+                <button className="btn btn--soft" onClick={() => setAskMic(false)}>
+                  {t(l('ليس الآن', 'Not now'))}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {!v.enabled && (
+          <div className="screen__pad">
+            <div className="vc__off">
+              <Icon name="mute" size={17} />
+              <span>{t(l('صوت رفيق متوقف: ستظهر الإجابات مكتوبة فقط.', "Rafiq's voice is off: answers appear as text only."))}</span>
+              <button className="linkbtn" onClick={() => v.setEnabled(true)}>
+                {t(l('تفعيل الصوت', 'Turn voice on'))}
+              </button>
+            </div>
+          </div>
+        )}
         {v.status !== 'idle' && (
           <button className="vc__stopall" onClick={v.stop}>
             <Icon name="stop" size={15} />
@@ -202,6 +276,14 @@ export default function VoiceCompanion() {
                     <button className="msg__act" onClick={() => openMap(m.dest!.id)}>
                       <Icon name="map" size={15} />
                       {t(l('اعرض على الخريطة:', 'Show on map:'))} {t(m.dest.name)}
+                    </button>
+                  )}
+                  {m.inpatient && (
+                    <button className="msg__act" onClick={() => openInpatient(m.inpatient === 'home' ? null : m.inpatient!)}>
+                      <Icon name="bed" size={15} />
+                      {m.inpatient === 'home'
+                        ? t(l('افتح طلبات التنويم', 'Open inpatient requests'))
+                        : `${t(l('اختر الطلب:', 'Choose a request:'))} ${t(categories.find((c) => c.id === m.inpatient)!.title)}`}
                     </button>
                   )}
                 </motion.div>

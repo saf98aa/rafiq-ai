@@ -9,7 +9,7 @@ import ExplainCard from './Explain';
 import PhoneApp from './PhoneApp';
 import { StageSim, Toggle } from './screens/More';
 
-const QUICK: ScreenId[] = ['dashboard', 'journey', 'voice', 'queue', 'doctor', 'exams', 'results', 'meds', 'map', 'discharge', 'access'];
+const QUICK: ScreenId[] = ['dashboard', 'journey', 'voice', 'queue', 'doctor', 'exams', 'results', 'meds', 'map', 'inpatient', 'discharge', 'access'];
 
 function useDeviceScale(reserve: number) {
   const calc = () => Math.min(1, Math.max(0.55, (window.innerHeight - reserve) / 868));
@@ -86,7 +86,7 @@ export default function AppStage() {
           <motion.aside className="panel" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.3 }}>
             <div className="panel__head">
               <span className="panel__eyebrow">{t(l('الفصل الرابع — التطبيق', 'Chapter 4 — The app'))}</span>
-              <h2>{t(l('عِش رحلة محمد داخل رفيق', "Live Mohammed's journey inside Rafiq"))}</h2>
+              <h2>{t(l('عِش رحلة عامر داخل رفيق', "Live Amer's journey inside Rafiq"))}</h2>
               <p>{t(l('تنقّل في التطبيق كما يفعل المريض. كل زر يعمل، وكل البيانات تجريبية.', 'Navigate the app as the patient would. Every control works; all data is fictional.'))}</p>
             </div>
 

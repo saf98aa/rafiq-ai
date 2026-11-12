@@ -46,7 +46,7 @@ export default function Exams() {
 
   return (
     <div className="screen">
-      <Header title={l('الفحوصات والتحاليل', 'Tests & examinations')} sub={l('طلبها د. سارة العتيبي', 'Requested by Dr. Sara Alotaibi')} />
+      <Header title={l('الفحوصات والتحاليل', 'Tests & examinations')} sub={l('طلبتها د. يسرى زكريا', 'Requested by Dr. Yusra Zakaria')} />
 
       <motion.div className="exlist" variants={stagger} initial="hidden" animate="show">
         {exams.map((e) => {

@@ -14,6 +14,7 @@ const ALL: { id: ScreenId; icon: string }[] = [
   { id: 'meds', icon: 'pill' },
   { id: 'map', icon: 'map' },
   { id: 'discharge', icon: 'flag' },
+  { id: 'inpatient', icon: 'bed' },
   { id: 'voice', icon: 'mic' },
   { id: 'access', icon: 'a11y' },
 ];

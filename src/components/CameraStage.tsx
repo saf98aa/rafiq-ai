@@ -26,6 +26,7 @@ export default function CameraStage({
   imgStyle,
   children,
   onReady,
+  bandFill = 0.6,
 }: {
   src: string;
   aspect?: number;
@@ -39,6 +40,8 @@ export default function CameraStage({
   imgStyle?: React.CSSProperties;
   children?: ReactNode;
   onReady?: () => void;
+  /** portrait screens: band height as a fraction of the screen (smaller = more of a wide photo visible) */
+  bandFill?: number;
 }) {
   const box = useRef<HTMLDivElement>(null);
   const layer = useRef<HTMLDivElement>(null);
@@ -62,7 +65,7 @@ export default function CameraStage({
   // On tall (portrait) screens the wide render is framed as a cinematic band over a
   // blurred fill of itself, instead of being cropped down to a sliver.
   const tall = size.h > 0 && size.w / size.h < 0.8;
-  const band = tall ? 0.6 : 1;
+  const band = tall ? bandFill : 1;
   const rw = Math.max(size.w, size.h * band * aspect);
   const rh = rw / aspect;
 

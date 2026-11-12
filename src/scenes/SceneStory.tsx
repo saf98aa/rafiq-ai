@@ -4,9 +4,10 @@ import CameraStage, { type Shot } from '../components/CameraStage';
 import { Atmosphere } from '../components/Ambience';
 import Icon from '../components/Icon';
 import { Mark } from '../components/Logo';
-import { l, meds } from '../data/content';
-import { destById, floors } from '../data/blueprint';
-import { hospitalPhotos, people, type PersonId } from '../data/people';
+import { l, pharmacist } from '../data/content';
+import { guideMeds, SLOTS } from '../data/medguide';
+import { destById, floors, youAreHere } from '../data/blueprint';
+import { hospitalPhotos, people, scenePhotos, type PersonId } from '../data/people';
 import { useStore } from '../store';
 import { lines, useVoice } from '../voice/VoiceProvider';
 import { Waveform } from '../voice/VoiceUI';
@@ -16,7 +17,7 @@ import { PROBLEMS, QUESTIONS, STORY, type Problem } from './story-data';
 /* ---------------- building blocks ---------------- */
 
 /** A still photograph brought to life by a virtual camera move (dolly / push-in) with depth-of-field. */
-function Plate({ src, aspect, from, to, dur = 9, dof = 0, filter, children }: { src: string; aspect: number; from: Shot; to: Shot; dur?: number; dof?: number; filter?: string; children?: ReactNode }) {
+function Plate({ src, aspect, from, to, dur = 9, dof = 0, filter, band, children }: { src: string; aspect: number; from: Shot; to: Shot; dur?: number; dof?: number; filter?: string; band?: number; children?: ReactNode }) {
   const [shot, setShot] = useState(from);
   useEffect(() => {
     const id = window.setTimeout(() => setShot(to), 60);
@@ -25,7 +26,7 @@ function Plate({ src, aspect, from, to, dur = 9, dof = 0, filter, children }: { 
   }, []);
   return (
     <div className="st-plate">
-      <CameraStage src={src} aspect={aspect} shot={shot} duration={dur} dof={dof} imgStyle={filter ? { filter } : undefined}>
+      <CameraStage src={src} aspect={aspect} shot={shot} duration={dur} dof={dof} bandFill={band} imgStyle={filter ? { filter } : undefined}>
         {children}
       </CameraStage>
     </div>
@@ -126,7 +127,8 @@ function SEmergency() {
   const { t } = useStore();
   const [p] = useTimeline([4600]);
   const er = hospitalPhotos.emergency;
-  const serving = 41 + useCycle(4, 2200);
+  const ci = scenePhotos.checkin;
+  const serving = 42 + useCycle(4, 2200);
   return (
     <>
       <AnimatePresence>
@@ -136,16 +138,16 @@ function SEmergency() {
           </motion.div>
         ) : (
           <motion.div key="rc" className="st-layer" initial={{ opacity: 0, scale: 1.05 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2 }}>
-            <PersonPlate id="receptionist" z={[1, 1.15]} filter="brightness(.8)" />
+            <Plate src={ci.src} aspect={ci.w / ci.h} from={{ ...ci.focus, z: 1 }} to={{ x: ci.focus.x + 0.06, y: ci.focus.y, z: 1.14 }} dur={9} dof={1} band={0.42} filter="brightness(.82)" />
           </motion.div>
         )}
       </AnimatePresence>
       <Atmosphere tint="cool" motes={12} />
       <motion.div className="st-ticker" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }} aria-hidden="true">
         <span>{t(l('يُخدم الآن', 'Now serving'))}</span>
-        <b dir="ltr">A-0{serving}</b>
+        <b dir="ltr">A0{serving}</b>
         <i />
-        <span>{t(l('الطوارئ', 'Emergency'))}</span>
+        <span>{t(l('الاستقبال', 'Reception'))}</span>
         <b>{t(l('مزدحم', 'Busy'))}</b>
       </motion.div>
       {p >= 1 && <PersonCard id="receptionist" className="st-card--tag" delay={0.6} />}
@@ -157,11 +159,11 @@ function SChallenge({ onPause }: { onPause: () => void }) {
   const { t, discovered, discover } = useStore();
   const q = useCycle(QUESTIONS.length, 2300);
   const [open, setOpen] = useState<Problem | null>(null);
+  const w = scenePhotos.waiting;
   return (
     <>
-      <PersonPlate id="patient" z={[1.02, 1.18]} filter="brightness(.72) saturate(.9)" dur={12} />
+      <Plate src={w.src} aspect={w.w / w.h} from={{ ...w.focus, z: 1.02 }} to={{ ...w.focus, z: 1.1 }} dur={12} dof={1} band={0.42} filter="brightness(.72) saturate(.95)" />
       <div className="st-vignette" />
-      <PersonCard id="companion" className="st-card--side" delay={0.8} />
       <div className="st-q">
         <Bubble show tone="q" key={q}>
           {t(QUESTIONS[q])}
@@ -235,7 +237,7 @@ function SMeet() {
             </div>
             <div className="st-ui__next">
               <Icon name="route" size={14} />
-              {t(l('التالي: الاستشارة مع د. سارة', 'Next: consultation with Dr. Sara'))}
+              {t(l('التالي: الاستشارة مع د. يسرى', 'Next: consultation with Dr. Yusra'))}
             </div>
           </div>
         </RafiqPhone>
@@ -261,7 +263,7 @@ function SVoice() {
 
 function SNav() {
   const { t } = useStore();
-  const f = floors[0];
+  const f = floors.find((x) => x.id === 'ground')!;
   const d = destById('lab');
   const path = d.route!.map((p, i) => `${i ? 'L' : 'M'}${p[0]} ${p[1]}`).join(' ');
   return (
@@ -276,7 +278,7 @@ function SNav() {
               <motion.rect x={d.area[0]} y={d.area[1]} width={d.area[2]} height={d.area[3]} rx="10" className="bp__area is-on" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }} />
               <path d={path} className="bp__route-bg" />
               <motion.path d={path} className="bp__route" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 1.4, duration: 2.2 }} />
-              <circle cx={200} cy={262} r={9} className="st-plan__you" />
+              <circle cx={youAreHere.x} cy={youAreHere.y} r={9} className="st-plan__you" />
             </svg>
             <motion.span className="st-plan__tag" style={{ left: `${(d.anchor[0] / f.w) * 100}%`, top: `${(d.area[1] / f.h) * 100}%` }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2.6 }}>
               <Icon name="flask" size={13} />
@@ -330,7 +332,7 @@ function SExams() {
           </span>
           <motion.span className="st-split__status" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.3 }}>
             <Icon name="scan" size={15} />
-            {t(l('الموجات فوق الصوتية', 'Ultrasound'))}
+            {t(l('تصوير بالأشعة', 'X-ray imaging'))}
             <b>{p >= 1 ? t(l('قيد التنفيذ', 'In progress')) : t(l('بالانتظار', 'Queued'))}</b>
           </motion.span>
         </motion.div>
@@ -341,9 +343,11 @@ function SExams() {
 
 function SResults() {
   const { t } = useStore();
+  const w = scenePhotos.waiting;
   return (
     <>
-      <PersonPlate id="patient" z={[1.05, 1.2]} filter="brightness(.5) saturate(.9) blur(3px)" />
+      {/* "patient Waiting" — Amer and Najia in the waiting area while the results come in */}
+      <Plate src={w.src} aspect={w.w / w.h} from={{ ...w.focus, z: 1.02 }} to={{ ...w.focus, z: 1.1 }} dur={10} dof={1} band={0.42} filter="brightness(.55) saturate(.95)" />
       <Atmosphere tint="rafiq" motes={10} />
       <div className="st-center">
         <RafiqPhone>
@@ -356,7 +360,7 @@ function SResults() {
             </div>
             <div className="st-ui__res">
               <Icon name="checkCircle" size={18} />
-              <span>{t(l('الموجات فوق الصوتية', 'Ultrasound'))}</span>
+              <span>{t(l('تصوير بالأشعة', 'X-ray imaging'))}</span>
               <b>{t(l('متاحة', 'Available'))}</b>
             </div>
             <div className="st-ui__note">
@@ -371,9 +375,45 @@ function SResults() {
   );
 }
 
+function SInpatient() {
+  const { t } = useStore();
+  const [p] = useTimeline([2200, 4200]);
+  const steps = [l('تم إرسال الطلب', 'Submitted'), l('قيد المراجعة', 'Under review'), l('جارٍ تنفيذ الطلب', 'In progress')];
+  return (
+    <>
+      <PersonPlate id="nurse" z={[1.02, 1.14]} filter="brightness(.5) saturate(.9) blur(2px)" />
+      <Atmosphere tint="rafiq" motes={10} />
+      <div className="st-center">
+        <RafiqPhone>
+          <div className="st-ui">
+            <small>{t(l('بماذا تحتاج المساعدة؟', 'What do you need help with?'))}</small>
+            <div className="st-ui__req">
+              <Icon name="heart" size={16} />
+              <span>{t(l('طلب مساعدة تمريضية', 'Request nursing assistance'))}</span>
+            </div>
+            <ol className="st-ui__steps">
+              {steps.map((s, i) => (
+                <li key={i} className={p >= i ? 'is-on' : ''}>
+                  <Icon name={p > i ? 'check' : 'clock'} size={12} stroke={2.6} />
+                  {t(s)}
+                </li>
+              ))}
+            </ol>
+            <div className="st-ui__note">
+              <Icon name="info" size={14} />
+              {t(l('نموذج تجريبي — لا يصل الطلب إلى طاقم فعلي.', 'Prototype — no real staff receive this request.'))}
+            </div>
+          </div>
+        </RafiqPhone>
+        <VoiceOrb line="story.inpatient" person="patient" />
+      </div>
+    </>
+  );
+}
+
 function SPharmacy() {
   const { t } = useStore();
-  const m = meds[0];
+  const m = guideMeds.find((x) => x.id === 'm3')!;
   return (
     <>
       <PersonPlate id="pharmacist" z={[1, 1.18]} filter="brightness(.72)" />
@@ -383,15 +423,30 @@ function SPharmacy() {
           <div className="st-med__top">
             <Icon name="pill" size={18} />
             <b>{t(m.name)}</b>
-            <small>{t(l('مثال توضيحي', 'Sample'))}</small>
+            <small>{t(l('بيانات تجريبية', 'Demo data'))}</small>
           </div>
-          <p>{t(m.instruction)}</p>
+          <p>{t(m.purpose)}</p>
+          <div className="st-med__slots">
+            {SLOTS.map((s) => (
+              <span key={s.id} className={m.slots.includes(s.id) ? 'is-on' : ''}>
+                <Icon name={m.slots.includes(s.id) ? 'check' : s.icon} size={12} stroke={2.4} />
+                {t(s.t)}
+              </span>
+            ))}
+          </div>
+          <div className="st-med__say">
+            <img src={pharmacist.avatar} alt="" />
+            <span>
+              <b>{t(pharmacist.name)}</b>
+              {t(l('سأوضح لك الغرض من الدواء وطريقة استخدامه حسب الوصفة المعتمدة.', 'I will explain what this medicine is for and how to use it, according to your approved prescription.'))}
+            </span>
+          </div>
           <span className="st-med__btn">
             <Icon name="speaker" size={15} />
-            {t(l('استمع إلى تعليمات الدواء', 'Listen to the medication instructions'))}
+            {t(l('استمع إلى شرح الدواء', 'Listen to the medicine explained'))}
           </span>
         </motion.div>
-        <VoiceOrb line="med.m1" />
+        <VoiceOrb line="guide.story" />
       </div>
     </>
   );
@@ -399,23 +454,20 @@ function SPharmacy() {
 
 function SDone({ onApp, onClosing }: { onApp: () => void; onClosing: () => void }) {
   const { t } = useStore();
+  const dc = scenePhotos.discharge;
   const [p] = useTimeline([1800]);
   return (
     <>
-      <div className="st-split st-split--duo">
-        <motion.div className="st-split__half" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2 }}>
-          <PersonPlate id="patient" z={[1, 1.1]} filter="brightness(.7)" />
-        </motion.div>
-        <motion.div className="st-split__half" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2, delay: 0.3 }}>
-          <PersonPlate id="companion" z={[1, 1.1]} filter="brightness(.7)" />
-        </motion.div>
-      </div>
+      {/* "Patient Discharge & Hospital Exit" — Amer and Najia walking out of the hospital */}
+      <motion.div className="st-done-plate" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2 }}>
+        <Plate src={dc.src} aspect={dc.w / dc.h} from={{ ...dc.focus, z: 1 }} to={{ x: dc.focus.x + 0.03, y: dc.focus.y, z: 1.08 }} dur={12} dof={1} band={0.42} filter="brightness(.62)" />
+      </motion.div>
       <Atmosphere tint="rafiq" motes={20} />
       <div className="st-copy st-copy--center st-copy--done">
         <motion.div className="st-done" initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 160, damping: 14 }}>
           <Icon name="check" size={34} stroke={2.6} />
         </motion.div>
-        <StoryLine text={STORY[10].title} show size="xl" />
+        <StoryLine text={STORY[STORY.length - 1].title} show size="xl" />
         <StoryLine text={l('شكرًا لثقتك برفيق.', 'Thank you for trusting Rafiq.')} show={p >= 1} size="md" />
         {p >= 1 && (
           <motion.div className="scene__actions" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
@@ -441,7 +493,8 @@ export default function SceneStory() {
   const v = useVoice();
   const portrait = useIsPortrait();
   const [playing, setPlaying] = useState(idx > 0);
-  const [sound, setSound] = useState(true);
+  // Rafiq's narration follows the optional voice switch (off until the viewer turns it on)
+  const sound = v.enabled;
   const meta = STORY[idx];
   const prog = useMotionValue(0);
   const elapsed = useRef(0);
@@ -488,7 +541,6 @@ export default function SceneStory() {
   };
   const start = () => {
     setPlaying(true);
-    setSound(true);
     go(1);
   };
   const toggle = () => {
@@ -506,9 +558,13 @@ export default function SceneStory() {
     }
   };
   const toggleSound = () => {
-    if (sound) v.stop();
     voiceDone.current = true;
-    setSound(!sound);
+    if (sound) v.setEnabled(false);
+    else if (meta.voice) {
+      spoke.current = true;
+      voiceDone.current = false;
+      v.speakNow(meta.voice, `story:${meta.id}`);
+    } else v.setEnabled(true);
   };
 
   // keyboard: arrows move between scenes, space pauses
@@ -554,6 +610,8 @@ export default function SceneStory() {
         return <SExams />;
       case 'results':
         return <SResults />;
+      case 'inpatient':
+        return <SInpatient />;
       case 'pharmacy':
         return <SPharmacy />;
       default:
@@ -599,8 +657,9 @@ export default function SceneStory() {
             <button onClick={() => go(idx + 1)} disabled={idx >= STORY.length - 1} aria-label={t(l('المشهد التالي', 'Next scene'))}>
               <Icon name="chevron" size={20} className="flip-rtl" />
             </button>
-            <button onClick={toggleSound} aria-label={sound ? t(l('كتم صوت رفيق', "Mute Rafiq's voice")) : t(l('تشغيل صوت رفيق', "Unmute Rafiq's voice"))} aria-pressed={!sound}>
+            <button onClick={toggleSound} aria-label={sound ? t(l('صوت رفيق مفعّل — اضغط للإيقاف', "Rafiq's voice is on — tap to turn off")) : t(l('صوت رفيق متوقف — اضغط للتفعيل', "Rafiq's voice is off — tap to turn on"))} aria-pressed={sound} className={`st-ctrl__snd ${sound ? 'is-on' : ''}`}>
               <Icon name={sound ? 'speaker' : 'mute'} size={19} />
+              <span className="st-ctrl__sndt">{sound ? t(l('الصوت مفعّل', 'Voice on')) : t(l('الصوت متوقف', 'Voice off'))}</span>
             </button>
             <button className="st-ctrl__skip" onClick={() => goScene('app')}>
               {t(l('التطبيق', 'App'))}

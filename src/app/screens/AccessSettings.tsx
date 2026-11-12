@@ -2,15 +2,18 @@ import { motion } from 'framer-motion';
 import Icon from '../../components/Icon';
 import { l, type L } from '../../data/content';
 import { A11Y_DEFAULT, useStore, type A11y } from '../../store';
+import { useVoice } from '../../voice/VoiceProvider';
 import { SpeedSelect, VoiceLangSelect } from '../../voice/VoiceUI';
+import { DisplaySelect, TextSizeSelect, VoiceSwitch } from '../DisplayPanel';
 import { Header, Notice, Section, rise, stagger } from '../ui';
 import { Toggle } from './More';
 
-const ROWS: { k: keyof A11y; icon: string; t: L; d: L }[] = [
-  { k: 'voiceGuide', icon: 'speaker', t: l('الإرشاد الصوتي', 'Voice guidance'), d: l('يتحدث رفيق عندما تختار وجهة أو تطلب الشرح.', 'Rafiq speaks when you choose a destination or ask for an explanation.') },
-  { k: 'autoRead', icon: 'wave', t: l('قراءة الصفحات تلقائيًا', 'Read pages automatically'), d: l('يشرح رفيق كل صفحة عند فتحها. لا يُقرأ أي بيان صحي حسّاس.', 'Rafiq explains each page as it opens. No sensitive health details are read out.') },
-  { k: 'large', icon: 'text', t: l('تكبير الخط', 'Larger text'), d: l('نصوص وأزرار أكبر في كل الشاشات.', 'Bigger text and buttons on every screen.') },
-  { k: 'contrast', icon: 'contrast', t: l('تباين عالٍ', 'High contrast'), d: l('ألوان أوضح وحدود أقوى لسهولة القراءة.', 'Stronger colours and borders for easier reading.') },
+type BoolKey = { [K in keyof A11y]: A11y[K] extends boolean ? K : never }[keyof A11y];
+const VOICE_ROWS: { k: BoolKey; icon: string; t: L; d: L }[] = [
+  { k: 'voiceGuide', icon: 'nav', t: l('الإرشاد الصوتي للمسارات', 'Spoken route guidance'), d: l('عند تفعيل الصوت: يتحدث رفيق عندما تختار وجهة على الخريطة.', 'When voice is on: Rafiq speaks when you choose a destination on the map.') },
+  { k: 'autoRead', icon: 'wave', t: l('قراءة الصفحات تلقائيًا', 'Read pages automatically'), d: l('عند تفعيل الصوت: يشرح رفيق كل صفحة عند فتحها. لا يُقرأ أي بيان صحي حسّاس.', 'When voice is on: Rafiq explains each page as it opens. No sensitive health details are read out.') },
+];
+const ROWS: { k: BoolKey; icon: string; t: L; d: L }[] = [
   { k: 'simple', icon: 'simple', t: l('واجهة مبسّطة', 'Simplified interface'), d: l('يُخفي التفاصيل الثانوية ويُبقي الأهم فقط.', 'Hides secondary details and keeps only what matters.') },
   { k: 'motion', icon: 'motion', t: l('تقليل الحركة', 'Reduce motion'), d: l('يوقف الحركات والانتقالات غير الضرورية.', 'Turns off non-essential animation and transitions.') },
   { k: 'labels', icon: 'label', t: l('أسماء واضحة للأزرار', 'Clear button labels'), d: l('يُظهر اسمًا مكتوبًا بجانب الأزرار التي تحمل رمزًا فقط.', 'Shows a written name next to icon-only buttons.') },
@@ -19,12 +22,29 @@ const ROWS: { k: keyof A11y; icon: string; t: L; d: L }[] = [
 
 export default function AccessSettings() {
   const { t, a11y, setA11y } = useStore();
+  const v = useVoice();
   return (
     <motion.div className="screen" variants={stagger} initial="hidden" animate="show">
       <Header title={l('إعدادات الوصول الميسر', 'Accessibility settings')} sub={l('اجعل رفيق مناسبًا لك', 'Make Rafiq work for you')} />
 
       <motion.div variants={rise}>
-        <Section title={l('العرض والقراءة', 'Display & reading')}>
+        <Section title={l('حجم الخط', 'Text size')}>
+          <div className="screen__pad0">
+            <TextSizeSelect />
+          </div>
+        </Section>
+      </motion.div>
+
+      <motion.div variants={rise}>
+        <Section title={l('وضع العرض', 'Display mode')}>
+          <div className="screen__pad0">
+            <DisplaySelect />
+          </div>
+        </Section>
+      </motion.div>
+
+      <motion.div variants={rise}>
+        <Section title={l('القراءة والتفاعل', 'Reading & interaction')}>
           <div className="settings settings--a11y">
             {ROWS.map((r) => (
               <div key={r.k} className="setting setting--tall">
@@ -42,6 +62,21 @@ export default function AccessSettings() {
 
       <motion.div variants={rise}>
         <Section title={l('الصوت', 'Voice')}>
+          <div className="screen__pad0">
+            <VoiceSwitch />
+          </div>
+          <div className={`settings settings--a11y ${v.enabled ? '' : 'is-muted'}`}>
+            {VOICE_ROWS.map((r) => (
+              <div key={r.k} className="setting setting--tall">
+                <Icon name={r.icon} size={21} />
+                <span>
+                  {t(r.t)}
+                  <small>{t(r.d)}</small>
+                </span>
+                <Toggle on={a11y[r.k]} onChange={(x) => setA11y({ [r.k]: x })} label={t(r.t)} />
+              </div>
+            ))}
+          </div>
           <div className="settings">
             <div className="setting">
               <Icon name="globe" size={19} />

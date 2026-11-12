@@ -1,13 +1,25 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Icon from '../../components/Icon';
 import { l } from '../../data/content';
-import { dests, destById, floors, youAreHere, type DestId, type Dest, type FloorId } from '../../data/blueprint';
+import { dests, destById, floors, starts, type DestId, type Dest, type FloorId } from '../../data/blueprint';
 import { useStore } from '../../store';
 import { useVoice } from '../../voice/VoiceProvider';
 import { ListenBar } from '../../voice/VoiceUI';
 import { suggestedDest } from '../journeyUtil';
 import { Header, Notice } from '../ui';
+
+// The 3D view (three.js) loads only when the map opens, so the rest of the app stays light.
+const Map3D = lazy(() => import('./Map3D'));
+type MapMode = '3d' | '2d';
+function webglAvailable() {
+  try {
+    const c = document.createElement('canvas');
+    return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl')));
+  } catch {
+    return false;
+  }
+}
 
 type View = { s: number; x: number; y: number };
 const clamp = (v: number, a: number, b: number) => Math.min(Math.max(v, a), b);
@@ -199,18 +211,19 @@ function BlueprintViewer({ floor, dest }: { floor: FloorId; dest: Dest | null })
         </div>
 
         {/* constant-size overlays */}
-        {floor === youAreHere.floor && (
-          <span className="bp__you" style={screen(youAreHere.x, youAreHere.y)}>
-            <i />
-            <b>{t(youAreHere.label)}</b>
-          </span>
-        )}
-        {onFloorDests.map((x) => (
-          <span key={x.id} className={`bp__label ${dest?.id === x.id ? 'is-on' : ''}`} style={screen(x.anchor[0], x.anchor[1])}>
-            <Icon name={x.icon} size={12} />
-            {t(x.name)}
-          </span>
-        ))}
+        <span className="bp__you" style={screen(starts[floor].x, starts[floor].y)}>
+          <i />
+          <b>{t(starts[floor].label)}</b>
+        </span>
+        {/* the plan prints its own department labels; only the chosen destination gets an overlay label */}
+        {onFloorDests
+          .filter((x) => dest?.id === x.id)
+          .map((x) => (
+            <span key={x.id} className="bp__label is-on" style={screen(x.anchor[0], x.anchor[1])}>
+              <Icon name={x.icon} size={12} />
+              {t(x.name)}
+            </span>
+          ))}
         {dest && dest.floor === floor && (
           <motion.span key={`pin-${dest.id}`} className="bp__pin" style={screen(dest.anchor[0], dest.area[1])} initial={{ y: -14, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6, type: 'spring', stiffness: 300, damping: 16 }}>
             <Icon name="pin" size={26} stroke={2} />
@@ -239,14 +252,32 @@ export default function MapScreen() {
   const v = useVoice();
   const initial = destById(mapDest ?? (suggestedDest(stage) as DestId));
   const [dest, setDest] = useState<Dest>(initial);
-  const [floor, setFloor] = useState<FloorId>(initial.floor);
+  const [floor, setFloor] = useState<FloorId>(initial.floor ?? 'ground');
   const suggested = suggestedDest(stage);
+  const [gl] = useState(webglAvailable);
+  const [failed, setFailed] = useState(false);
+  const [mode, setModeState] = useState<MapMode>(() => {
+    try {
+      return (localStorage.getItem('rafiq-map-mode') as MapMode) || '3d';
+    } catch {
+      return '3d';
+    }
+  });
+  const setMode = (m: MapMode) => {
+    setModeState(m);
+    try {
+      localStorage.setItem('rafiq-map-mode', m);
+    } catch {
+      /* ignore */
+    }
+  };
+  const show3d = mode === '3d' && gl && !failed;
 
   useEffect(() => {
     if (!mapDest) return;
     const d = destById(mapDest);
     setDest(d);
-    setFloor(d.floor);
+    if (d.floor) setFloor(d.floor);
   }, [mapDest]);
 
   const chips = useRef<HTMLDivElement>(null);
@@ -257,26 +288,42 @@ export default function MapScreen() {
 
   const choose = (d: Dest) => {
     setDest(d);
-    setFloor(d.floor);
-    if (a11y.voiceGuide) v.speak(`route.${d.id}`);
+    if (d.floor) setFloor(d.floor);
+    if (a11y.voiceGuide && v.enabled) v.speak(`route.${d.id}`);
   };
   const f = floors.find((x) => x.id === floor)!;
-  const otherFloor = dest.floor !== floor;
+  const otherFloor = dest.floor !== null && dest.floor !== floor;
+  const chipList = dests.filter((x) => x.floor === floor || x.floor === null);
+  const destFloor = dest.floor ? floors.find((x) => x.id === dest.floor)! : null;
 
   return (
     <div className="screen screen--map">
-      <Header title={l('خريطة المستشفى', 'Hospital map')} sub={l('من المخططات المعمارية الحقيقية', 'From the real architectural plans')} />
-      <div className="floors" role="tablist" aria-label={t(l('اختر الطابق', 'Choose a floor'))}>
-        <Icon name="layers" size={16} />
-        {floors.map((x) => (
-          <button key={x.id} role="tab" aria-selected={x.id === floor} className={x.id === floor ? 'is-on' : ''} onClick={() => setFloor(x.id)}>
-            {t(x.short)}
-          </button>
-        ))}
+      <Header title={l('خريطة المستشفى', 'Hospital map')} sub={l('ثلاثية الأبعاد — من المخططات المعتمدة', '3D — from the approved plans')} />
+      <div className="maptop">
+        <div className="floors" role="tablist" aria-label={t(l('اختر الطابق', 'Choose a floor'))}>
+          <Icon name="layers" size={16} />
+          {floors.map((x) => (
+            <button key={x.id} role="tab" aria-selected={x.id === floor} className={x.id === floor ? 'is-on' : ''} onClick={() => setFloor(x.id)}>
+              {t(x.short)}
+            </button>
+          ))}
+        </div>
+        {gl && !failed && (
+          <div className="mapmode" role="radiogroup" aria-label={t(l('طريقة العرض', 'View'))}>
+            <button role="radio" aria-checked={mode === '3d'} className={mode === '3d' ? 'is-on' : ''} onClick={() => setMode('3d')}>
+              <Icon name="cube" size={14} />
+              3D
+            </button>
+            <button role="radio" aria-checked={mode === '2d'} className={mode === '2d' ? 'is-on' : ''} onClick={() => setMode('2d')}>
+              <Icon name="map" size={14} />
+              2D
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="dests" ref={chips} role="listbox" aria-label={t(l('اختر وجهتك', 'Choose a destination'))}>
-        {dests.map((x) => (
+        {chipList.map((x) => (
           <button key={x.id} role="option" aria-selected={x.id === dest.id} className={`dest ${x.id === dest.id ? 'is-on' : ''}`} onClick={() => choose(x)}>
             <Icon name={x.icon} size={15} />
             {t(x.name)}
@@ -285,7 +332,28 @@ export default function MapScreen() {
         ))}
       </div>
 
-      <BlueprintViewer floor={floor} dest={dest} />
+      {show3d ? (
+        <Suspense
+          fallback={
+            <div className="m3 m3--wait">
+              <div className="m3__loading">
+                <span className="m3__spin" />
+                {t(l('جارٍ تحميل الخريطة ثلاثية الأبعاد…', 'Loading the 3D map…'))}
+              </div>
+            </div>
+          }
+        >
+          <Map3D floor={floor} dest={dest} onFail={() => setFailed(true)} />
+        </Suspense>
+      ) : (
+        <BlueprintViewer floor={floor} dest={dest} />
+      )}
+      {(!gl || failed) && (
+        <p className="bp__note">
+          <Icon name="info" size={13} />
+          {t(l('العرض ثلاثي الأبعاد غير متاح على هذا الجهاز، لذلك تظهر الخريطة المسطّحة.', '3D is not available on this device, so the flat map is shown.'))}
+        </p>
+      )}
       <p className="bp__note">
         <Icon name="info" size={13} />
         {t(f.note)}
@@ -295,26 +363,34 @@ export default function MapScreen() {
         <motion.div key={dest.id} className="routecard routecard--bp" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}>
           <div className="routecard__row">
             <span className="routecard__ic">
-              <Icon name={dest.route ? 'nav' : 'pin'} size={20} />
+              <Icon name={dest.route ? 'nav' : dest.floor ? 'pin' : 'help'} size={20} />
             </span>
             <div>
               <small>{t(l('الوجهة', 'Destination'))}</small>
               <b>{t(dest.name)}</b>
               <small className="routecard__plan">
-                {t(l('في المخطط:', 'On the plan:'))} {t(dest.planName)} · {t(floors.find((x) => x.id === dest.floor)!.label)}
+                {destFloor ? (
+                  <>
+                    {t(l('في المخطط:', 'On the plan:'))} {t(dest.planName)} · {t(destFloor.label)}
+                  </>
+                ) : (
+                  t(dest.planName)
+                )}
               </small>
             </div>
           </div>
           {otherFloor && (
-            <button className="btn btn--soft btn--sm" onClick={() => setFloor(dest.floor)}>
+            <button className="btn btn--soft btn--sm" onClick={() => dest.floor && setFloor(dest.floor)}>
               <Icon name="layers" size={15} />
               {t(l('اعرض طابق الوجهة', "Show the destination's floor"))}
             </button>
           )}
           <p className="routecard__how">
-            {dest.route
-              ? t(l('اتبع الخط الأزرق من موقعك التجريبي عبر الممرات الموضحة في المخطط.', 'Follow the blue line from your demo location through the corridors shown on the plan.'))
-              : t(l('يُعرض الموقع فقط: المخطط لا يوضح الطريق بين الطوابق.', 'Location only: the plan does not show the way between floors.'))}
+            {!dest.floor
+              ? t(l('لا تظهر الصيدلية في مخططَي الدور الأرضي والأول، لذلك لا نعرض لها موقعًا أو مسارًا. اسأل موظفي الاستقبال.', 'The pharmacy does not appear on the ground- or first-floor plan, so no location or route is shown. Please ask reception.'))
+              : dest.floor === 'first'
+              ? t(l('اتبع الخط من المصعد الموضح في مخطط الدور الأول، عبر الممرات الموضحة فيه.', 'Follow the line from the elevator marked on the first-floor plan, along the corridors it shows.'))
+              : t(l('اتبع الخط من موقعك التجريبي عبر الممرات الموضحة في المخطط.', 'Follow the line from your demo location through the corridors shown on the plan.'))}
           </p>
           <ListenBar line={`route.${dest.id}`} label={l('استمع إلى الاتجاهات', 'Listen to the directions')} />
         </motion.div>
@@ -324,8 +400,8 @@ export default function MapScreen() {
         <Notice>
           {t(
             l(
-              'المخطط مأخوذ من رسومات معمارية لمستشفى الولادة ويُستخدم هنا كمثال لطريقة الملاحة. موقعك محاكاة — لا يستخدم رفيق تحديد موقع داخلي أو GPS.',
-              "The plan comes from a maternity hospital's architectural drawings and is used here to demonstrate navigation. Your position is simulated — Rafiq uses no indoor positioning or GPS."
+              'الخريطة ثلاثية الأبعاد تصوّر مرجعي مبني من مخططَي الدور الأرضي والأول (رسومات مستشفى ولادة)، وليست نموذجًا معماريًا دقيقًا: الأرضية هي المخطط نفسه، والجدران مرفوعة من خطوطه، وارتفاعها توضيحي. موقعك محاكاة — لا يستخدم رفيق تحديد موقع داخلي أو GPS.',
+              "The 3D map is a reference visualisation built from the ground- and first-floor plans (a maternity hospital's drawings), not an exact architectural model: the floor is the plan itself, the walls are raised from its lines, and their height is illustrative. Your position is simulated — Rafiq uses no indoor positioning or GPS."
             )
           )}
         </Notice>

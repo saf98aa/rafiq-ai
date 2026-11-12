@@ -17,11 +17,12 @@ export type ScreenId =
   | 'discharge'
   | 'more'
   | 'voice'
-  | 'access';
+  | 'access'
+  | 'inpatient';
 
 export const patient = {
-  name: l('محمد عبدالله', 'Mohammed Abdullah'),
-  first: l('محمد', 'Mohammed'),
+  name: l('عامر', 'Amer'),
+  first: l('عامر', 'Amer'),
   age: l('68 سنة', '68 years'),
   visit: 'VIS-0001',
   hospital: l('مستشفى المدينة العام (نموذج تجريبي)', 'Al Madinah General Hospital (demo)'),
@@ -32,27 +33,27 @@ export const patient = {
 };
 
 export const companion = {
-  name: l('ريم', 'Reem'),
+  name: l('ناجية', 'Najia'),
   relation: l('ابنته ومرافقته', 'His daughter and companion'),
   avatar: './media/people/av_companion.webp',
 };
 
 export const doctor = {
-  name: l('د. سارة العتيبي', 'Dr. Sara Alotaibi'),
+  name: l('د. يسرى زكريا', 'Dr. Yusra Zakaria'),
   specialty: l('استشارية الطب الباطني', 'Consultant, Internal Medicine'),
   clinic: l('عيادة الباطنة رقم 4', 'Internal Medicine — Clinic 4'),
   floor: l('الطابق الأرضي — منطقة العيادات', 'Ground floor — clinics area'),
-  avatar: './media/people/av_doctor.webp',
+  avatar: './media/people/av_yusra.webp',
 };
 
 export const nurse = {
-  name: l('الممرضة نورة', 'Nurse Noura'),
-  role: l('التمريض — العيادات الخارجية', 'Nursing — Outpatient clinics'),
-  avatar: './media/people/av_nurse.webp',
+  name: l('الممرضة نجوى', 'Nurse Najwa'),
+  role: l('التمريض', 'Nursing'),
+  avatar: './media/people/av_najwa.webp',
 };
 
 export const pharmacist = {
-  name: l('الصيدلي يوسف', 'Pharmacist Yousef'),
+  name: l('الصيدلي سليمان', 'Pharmacist Suleiman'),
   role: l('صيدلية المستشفى', 'Hospital pharmacy'),
   avatar: './media/people/av_pharmacist.webp',
 };
@@ -107,7 +108,7 @@ export const stages: Stage[] = [
     icon: 'stethoscope',
     title: l('الاستشارة الطبية', 'Medical consultation'),
     time: '09:30',
-    info: l('موعدك مع د. سارة العتيبي في العيادة رقم 4.', 'Your appointment with Dr. Sara Alotaibi in Clinic 4.'),
+    info: l('موعدك مع د. يسرى زكريا في العيادة رقم 4.', 'Your appointment with Dr. Yusra Zakaria in Clinic 4.'),
     next: l('اتّباع ما يطلبه الطبيب من فحوصات.', 'Follow the tests requested by your doctor.'),
     screen: 'doctor',
   },
@@ -154,11 +155,11 @@ export const exams = [
   {
     id: 'xray',
     icon: 'scan',
-    name: l('تصوير بالموجات فوق الصوتية', 'Ultrasound scan'),
-    place: l('غرف الموجات فوق الصوتية — الطابق الأرضي', 'Ultrasound rooms — Ground floor'),
+    name: l('تصوير بالأشعة', 'X-ray imaging'),
+    place: l('غرف التصوير التخصصي — الطابق الأرضي', 'Specialized imaging rooms — Ground floor'),
     dest: 'radiology' as const,
     duration: l('15 – 20 دقيقة تقريبًا', 'About 15–20 minutes'),
-    prep: l('سيُبلغك قسم الأشعة بأي تحضير مطلوب قبل التصوير.', 'The imaging team will tell you about any preparation needed before the scan.'),
+    prep: l('سيُبلغك قسم الأشعة بأي تحضير مطلوب قبل التصوير.', 'The radiology team will tell you about any preparation needed before imaging.'),
     doneAt: '10:40',
   },
   {
@@ -303,13 +304,13 @@ export const explanations: Partial<Record<ScreenId, Explain>> = {
     connection: l('بعد مراجعة النتائج مع الطبيب، تبدأ مرحلة الإرشادات والخروج.', 'After the doctor reviews the results, the guidance and discharge stage begins.'),
   },
   meds: {
-    title: l('إرشادات الأدوية', 'Medication guidance'),
-    problem: l('تضيع تعليمات الأدوية بين الأوراق والكلام الشفهي، ويصعب تذكّرها لاحقًا.', 'Medication instructions get lost between paper and verbal advice, and are hard to recall later.'),
+    title: l('دليلك الدوائي', 'Medication Guide'),
+    problem: l('يعرف المريض اسم الدواء، لكنه لا يعرف لماذا يأخذه، ومتى، وما الذي يتجنّبه — وتضيع التعليمات بين الأوراق والكلام الشفهي.', 'Patients know a medicine’s name but not why, when, or what to avoid — and instructions get lost between paper and verbal advice.'),
     decision: l(
-      'عرض ما سجّله فريق الرعاية فقط، بلغة واضحة، مع إحالة كل ما عداه إلى الصيدلي.',
-      'Show only what the care team recorded, in plain language, and refer everything else to the pharmacist.'
+      'يشرح الصيدلي سليمان كل دواء: الغرض، الجرعة، المواعيد في جدول بصري، الطعام، الاحتياطات والتداخلات الموثّقة — من الوصفة والنشرة المعتمدة فقط، مع إحالة كل ما عداه إلى المختص.',
+      'Pharmacist Suleiman explains each medicine — purpose, dose, a visual schedule, food, precautions and verified interactions — only from the prescription and approved information, referring everything else to a professional.'
     ),
-    value: l('وصول سهل وآمن إلى التعليمات المعتمدة في أي وقت.', 'Easy, safe access to approved instructions at any time.'),
+    value: l('فهم أفضل والتزام أعلى بالدواء، دون أن يشخّص رفيق أو يصف أو يغيّر أي جرعة.', 'Better understanding and adherence — without Rafiq ever diagnosing, prescribing or changing a dose.'),
     connection: l('تصبح الإرشادات جزءًا من ملخص الخروج ومتابعة ما بعد الزيارة.', 'The guidance becomes part of the discharge summary and post-visit follow-up.'),
   },
   map: {
@@ -320,7 +321,7 @@ export const explanations: Partial<Record<ScreenId, Explain>> = {
       'An interactive map built on real architectural drawings, with routes that follow only documented corridors and a spoken explanation — without claiming real positioning.'
     ),
     value: l('يعرف المريض وجهته ويفهم المسار المقترح، بالصورة والصوت.', 'Patients identify their destination and understand the suggested route, by sight and by sound.'),
-    connection: l('الوجهة تُقترح تلقائيًا حسب المرحلة: العيادة، المختبر، ثم الصيدلية.', 'Destinations are suggested by stage: the clinic, the lab, then the pharmacy.'),
+    connection: l('الوجهة تُقترح تلقائيًا حسب المرحلة: الاستقبال، العيادة، ثم المختبر والأشعة.', 'Destinations are suggested by stage: reception, the clinic, then the lab and imaging.'),
   },
   discharge: {
     title: l('الخروج واكتمال الرحلة', 'Discharge & completion'),
@@ -351,6 +352,23 @@ export const explanations: Partial<Record<ScreenId, Explain>> = {
     connection: l('تنطبق الإعدادات على كل شاشات الرحلة فورًا.', 'The settings apply instantly across every screen of the journey.'),
     beneficiaries: l('كبار السن، وضعاف البصر، ومستخدمو قارئ الشاشة ولوحة المفاتيح.', 'Elderly patients, people with low vision, and screen-reader and keyboard users.'),
   },
+  inpatient: {
+    title: l('طلبات المريض أثناء التنويم', 'Inpatient Requests'),
+    problem: l(
+      'المريض المنوَّم لا يعرف دائمًا لمن يتوجّه بطلبه، فيكرّر السؤال أو ينتظر مرور أحد من الطاقم.',
+      'Admitted patients do not always know whom to ask, so they repeat questions or wait for someone to pass by.'
+    ),
+    decision: l(
+      'قائمة منظّمة بالطلبات المتاحة حسب حالة المريض وخطة رعايته المعتمدة فقط — التمريض، العلاج الطبيعي، والأقسام الأخرى — مع تأكيد قبل الإرسال وحالة واضحة لكل طلب، وإمكانية الطلب بالصوت.',
+      'An organised list of the requests available for this patient’s condition and approved care plan only — nursing, physical therapy and other departments — with a confirmation step, a clear status for each request, and voice support.'
+    ),
+    value: l('يطلب المريض ما يحتاجه دون بحث عن القسم المسؤول، ويعرف أين وصل طلبه.', 'Patients ask for what they need without hunting for the right department, and can see where their request stands.'),
+    connection: l('تبدأ هذه الخدمة عند تنويم المريض، وتبقى مرتبطة بخطة رعايته حتى الخروج.', 'The service starts when the patient is admitted and stays linked to their care plan until discharge.'),
+    beneficiaries: l(
+      'المرضى المنوّمون وكبار السن، ومن يصعب عليهم الحركة أو القراءة، ومرافقوهم.',
+      'Admitted and elderly patients, people who find moving or reading difficult, and their companions.'
+    ),
+  },
 };
 
 export const screenTitle: Record<ScreenId, L> = {
@@ -361,10 +379,11 @@ export const screenTitle: Record<ScreenId, L> = {
   doctor: l('الطبيب', 'Doctor'),
   exams: l('الفحوصات', 'Tests'),
   results: l('النتائج', 'Results'),
-  meds: l('أدويتي', 'My medications'),
+  meds: l('دليلك الدوائي', 'Medication Guide'),
   map: l('الخريطة', 'Map'),
   discharge: l('الخروج', 'Discharge'),
   more: l('المزيد', 'More'),
   voice: l('رفيق يتحدث معك', 'Rafiq Voice Companion'),
   access: l('الوصول الميسر', 'Accessibility'),
+  inpatient: l('طلبات التنويم', 'Inpatient requests'),
 };

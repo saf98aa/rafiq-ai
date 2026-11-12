@@ -1,6 +1,11 @@
 // Character asset manager: one place that maps every story/app role to its reference photograph
 // from the `pic_ref` folder. Filenames in pic_ref are the source of truth for each role.
-// Names are fictional; the photographs are used as-is (no filters, no face changes).
+// The photographs are used as-is (cropped/resized only — no filters, no face changes).
+//
+// Official cast (names given by the project owner):
+//   Receptionist Safaa · Patient Amer · Companion (his daughter) Najia · Dr. Yusra Zakaria
+//   Nurse Najwa · Pharmacist Suleiman · Lab technician Mohammed · Radiology technician Omar
+// "Rafiq" is the AI companion product — never a person.
 import type { L } from './content';
 
 const l = (ar: string, en: string): L => ({ ar, en });
@@ -25,7 +30,7 @@ export const people: Record<PersonId, Person> = {
   patient: {
     id: 'patient',
     source: 'Elderly_Patient.jpg.png',
-    name: l('محمد عبدالله', 'Mohammed Abdullah'),
+    name: l('عامر', 'Amer'),
     role: l('المريض', 'Patient'),
     photo: `${P}patient.webp`,
     avatar: `${P}av_patient.webp`,
@@ -36,7 +41,7 @@ export const people: Record<PersonId, Person> = {
   companion: {
     id: 'companion',
     source: 'Patient_Companion.jpg.jpeg',
-    name: l('ريم', 'Reem'),
+    name: l('ناجية', 'Najia'),
     role: l('ابنته ومرافقته', 'His daughter and companion'),
     photo: `${P}companion.webp`,
     avatar: `${P}av_companion.webp`,
@@ -46,30 +51,30 @@ export const people: Record<PersonId, Person> = {
   },
   doctor: {
     id: 'doctor',
-    source: 'Doctor.jpg.png',
-    name: l('د. سارة العتيبي', 'Dr. Sara Alotaibi'),
+    source: 'doctor ai.png',
+    name: l('د. يسرى زكريا', 'Dr. Yusra Zakaria'),
     role: l('استشارية الطب الباطني', 'Consultant, Internal Medicine'),
-    photo: `${P}doctor.webp`,
-    avatar: `${P}av_doctor.webp`,
-    w: 900,
-    h: 1200,
-    face: { x: 0.57, y: 0.24 },
+    photo: `${P}doctor-ai.webp`,
+    avatar: `${P}av_yusra.webp`,
+    w: 1600,
+    h: 900,
+    face: { x: 0.46, y: 0.32 },
   },
   nurse: {
     id: 'nurse',
-    source: 'Nurse.jpg.png',
-    name: l('الممرضة نورة', 'Nurse Noura'),
-    role: l('التمريض — العيادات الخارجية', 'Nursing — Outpatient clinics'),
-    photo: `${P}nurse.webp`,
-    avatar: `${P}av_nurse.webp`,
-    w: 900,
-    h: 1350,
-    face: { x: 0.51, y: 0.22 },
+    source: 'nurse ai.png',
+    name: l('الممرضة نجوى', 'Nurse Najwa'),
+    role: l('التمريض', 'Nursing'),
+    photo: `${P}nurse-ai.webp`,
+    avatar: `${P}av_najwa.webp`,
+    w: 1600,
+    h: 900,
+    face: { x: 0.43, y: 0.3 },
   },
   pharmacist: {
     id: 'pharmacist',
     source: 'Pharmacist.jpg.png',
-    name: l('الصيدلي يوسف', 'Pharmacist Yousef'),
+    name: l('الصيدلي سليمان', 'Pharmacist Suleiman'),
     role: l('صيدلية المستشفى', 'Hospital pharmacy'),
     photo: `${P}pharmacist.webp`,
     avatar: `${P}av_pharmacist.webp`,
@@ -79,19 +84,19 @@ export const people: Record<PersonId, Person> = {
   },
   receptionist: {
     id: 'receptionist',
-    source: 'Receptionist.jpg.png',
-    name: l('هند', 'Hind'),
-    role: l('موظفة الاستقبال', 'Receptionist'),
-    photo: `${P}receptionist.webp`,
-    avatar: `${P}av_receptionist.webp`,
-    w: 900,
-    h: 1200,
-    face: { x: 0.51, y: 0.49 },
+    source: 'Patient Check-in & Registration.png',
+    name: l('صفا', 'Safaa'),
+    role: l('موظفة الاستقبال والتسجيل', 'Check-in & registration'),
+    photo: `${P}checkin.webp`,
+    avatar: `${P}av_safaa.webp`,
+    w: 1600,
+    h: 900,
+    face: { x: 0.83, y: 0.345 },
   },
   lab: {
     id: 'lab',
     source: 'Lab_Technician.jpg.png',
-    name: l('خالد', 'Khalid'),
+    name: l('محمد', 'Mohammed'),
     role: l('فني المختبر', 'Laboratory technician'),
     photo: `${P}lab.webp`,
     avatar: `${P}av_lab.webp`,
@@ -101,15 +106,25 @@ export const people: Record<PersonId, Person> = {
   },
   radiology: {
     id: 'radiology',
-    source: 'Radiology_Technician.jpg.png',
+    source: 'x-ray.png',
     name: l('عمر', 'Omar'),
     role: l('فني الأشعة', 'Radiology technician'),
-    photo: `${P}radiology.webp`,
-    avatar: `${P}av_radiology.webp`,
+    photo: `${P}radiology-xray.webp`,
+    avatar: `${P}av_omar.webp`,
     w: 900,
-    h: 1350,
-    face: { x: 0.33, y: 0.2 },
+    h: 1349,
+    face: { x: 0.415, y: 0.195 },
   },
+};
+
+/** Group scenes from pic_ref, used as-is. */
+export const scenePhotos = {
+  /** "patient Waiting.png" — Amer and his daughter Najia in the waiting area. */
+  waiting: { src: `${P}waiting.webp`, source: 'patient Waiting.png', w: 1600, h: 900, focus: { x: 0.5, y: 0.36 } },
+  /** "Patient Check-in & Registration.png" — Amer and Najia at the reception desk with Safaa. */
+  checkin: { src: `${P}checkin.webp`, source: 'Patient Check-in & Registration.png', w: 1600, h: 900, focus: { x: 0.62, y: 0.36 } },
+  /** "Patient Discharge & Hospital Exit.png" — Amer and Najia walking towards the hospital exit. */
+  discharge: { src: `${P}discharge.webp`, source: 'Patient Discharge & Hospital Exit.png', w: 1600, h: 900, focus: { x: 0.45, y: 0.4 } },
 };
 
 /** Hospital environment photographs from `hospital-blueprints`. */

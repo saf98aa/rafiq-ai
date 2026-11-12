@@ -6,12 +6,13 @@ import { l, type L } from '../data/content';
 import { useStore } from '../store';
 import { screenLine } from '../voice/logic';
 import { ListenBar } from '../voice/VoiceUI';
+import { HeaderTools } from './DisplayPanel';
 
 export const PortalCtx = createContext<HTMLElement | null>(null);
 
 export function Header({ title, sub, back = true, right, listen = true }: { title: L; sub?: L; back?: boolean; right?: ReactNode; listen?: boolean }) {
-  const { t, back: goBack, nav, screen, stage, queue } = useStore();
-  const line = listen ? screenLine(screen, { stage, ahead: queue.ahead }) : null;
+  const { t, back: goBack, nav, screen, stage, queue, admitted } = useStore();
+  const line = listen ? screenLine(screen, { stage, ahead: queue.ahead, admitted }) : null;
   return (
     <>
     <header className="ah">
@@ -26,7 +27,10 @@ export function Header({ title, sub, back = true, right, listen = true }: { titl
         <h1>{t(title)}</h1>
         {sub && <p>{t(sub)}</p>}
       </div>
-      {right ?? <span className="ah__spacer" />}
+      <div className="ah__end">
+        {right}
+        <HeaderTools />
+      </div>
     </header>
     {line && (
       <div className="ah__listen">

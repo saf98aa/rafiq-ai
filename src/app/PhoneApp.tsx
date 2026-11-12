@@ -18,6 +18,7 @@ import Discharge from './screens/Discharge';
 import More from './screens/More';
 import VoiceCompanion from './screens/VoiceCompanion';
 import AccessSettings from './screens/AccessSettings';
+import Inpatient from './screens/Inpatient';
 import { VoicePlaybackControls } from '../voice/VoiceUI';
 import { useVoice } from '../voice/VoiceProvider';
 import { screenLine } from '../voice/logic';
@@ -36,6 +37,7 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   more: More,
   voice: VoiceCompanion,
   access: AccessSettings,
+  inpatient: Inpatient,
 };
 
 const TABS: { id: ScreenId; icon: string; label: ReturnType<typeof l> }[] = [
@@ -72,7 +74,7 @@ function StatusBar() {
 }
 
 export default function PhoneApp({ framed, wide, preview = false }: { framed: boolean; wide: boolean; preview?: boolean }) {
-  const { screen, nav, tab, presentation, explainOpen, setExplainOpen, t, lang, a11y, stage, queue, liveMsg } = useStore();
+  const { screen, nav, tab, presentation, explainOpen, setExplainOpen, t, lang, a11y, stage, queue, liveMsg, admitted } = useStore();
   const voice = useVoice();
   const [portal, setPortal] = useState<HTMLElement | null>(null);
   const prev = useRef(nav.length);
@@ -86,16 +88,16 @@ export default function PhoneApp({ framed, wide, preview = false }: { framed: bo
   // optional: read each page's explanation when it opens (never sensitive details)
   const lastRead = useRef<string | null>(null);
   useEffect(() => {
-    if (preview || !a11y.autoRead || shown === 'welcome') return;
+    if (preview || !a11y.autoRead || !voice.enabled || shown === 'welcome') return;
     if (lastRead.current === shown) return;
     lastRead.current = shown;
-    const line = screenLine(shown, { stage, ahead: queue.ahead });
+    const line = screenLine(shown, { stage, ahead: queue.ahead, admitted });
     if (line) voice.speak(line);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shown, a11y.autoRead, preview]);
+  }, [shown, a11y.autoRead, voice.enabled, preview]);
   useEffect(() => {
-    if (!a11y.autoRead) lastRead.current = null;
-  }, [a11y.autoRead]);
+    if (!a11y.autoRead || !voice.enabled) lastRead.current = null;
+  }, [a11y.autoRead, voice.enabled]);
   const Comp = SCREENS[shown];
   const d = (push ? 1 : -1) * (lang === 'ar' ? -1 : 1);
   const activeTab = [...nav].reverse().find((s) => TABS.some((x) => x.id === s)) ?? 'dashboard';

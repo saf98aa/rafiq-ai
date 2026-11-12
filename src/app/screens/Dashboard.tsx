@@ -6,9 +6,10 @@ import { ListenBar } from '../../voice/VoiceUI';
 import { useStore } from '../../store';
 import { actionsFor, aheadText, minutesText, stageStatus } from '../journeyUtil';
 import { Avatar, Badge, Roll, Section, rise, stagger } from '../ui';
+import { HeaderTools } from '../DisplayPanel';
 
 export default function Dashboard() {
-  const { t, stage, queue, blood, go, openMap, setFocus, lang, role } = useStore();
+  const { t, stage, queue, blood, go, openMap, setFocus, lang, role, admitted, requests } = useStore();
   const cur = stages[Math.min(stage, stages.length - 1)];
   const done = stage >= STAGE.complete;
   const pct = Math.round((Math.min(stage, 8) / 8) * 100);
@@ -36,6 +37,9 @@ export default function Dashboard() {
                 ? t(l(`أنتِ ترافقين ${patient.first.ar} في زيارته اليوم.`, `You're accompanying ${patient.first.en} on today's visit.`))
                 : t(l('نتمنى لك رحلة صحية ميسّرة.', 'We wish you a smooth healthcare journey.'))}
             </p>
+          </div>
+          <div className="dash__tools">
+            <HeaderTools />
           </div>
         </motion.div>
         <motion.div className="dash__listen" variants={rise}>
@@ -159,6 +163,27 @@ export default function Dashboard() {
               </motion.button>
             ))}
           </div>
+        </Section>
+      </motion.div>
+
+      <motion.div variants={rise}>
+        <Section title={l('أثناء التنويم', 'During a hospital stay')}>
+          <button className="action action--inp" onClick={() => go('inpatient')}>
+            <span className="action__ic">
+              <Icon name="bed" size={20} />
+            </span>
+            <span className="action__txt">
+              <b>{t(l('طلبات التنويم', 'Inpatient requests'))}</b>
+              <small>
+                {admitted
+                  ? requests.length
+                    ? t(l(`لديك ${requests.length === 1 ? 'طلب واحد' : requests.length === 2 ? 'طلبان' : `${requests.length} طلبات`}`, `${requests.length} request${requests.length > 1 ? 's' : ''}`))
+                    : t(l('التمريض، العلاج الطبيعي، وخدمات أخرى', 'Nursing, physical therapy and other services'))
+                  : t(l('تظهر عند التنويم — جرّب المحاكاة', 'Available once admitted — try the simulation'))}
+              </small>
+            </span>
+            <Icon name="chevron" size={16} className="action__chev flip-rtl" />
+          </button>
         </Section>
       </motion.div>
     </motion.div>

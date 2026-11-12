@@ -1,35 +1,49 @@
 /* ============ Rafiq design tokens ============ */
 :root {
-  --navy-950: #051427;
-  --navy-900: #0b2545;
-  --navy-800: #102f57;
-  --navy-700: #13406f;
-  --blue-600: #1f7fd0;
-  --blue-500: #2d8fde;
-  --blue-100: #dcecfa;
-  --blue-50: #eef6fd;
-  --teal-700: #0a5f7a;
-  --teal-600: #0b6e8e;
-  --teal-500: #0e8fa8;
-  --cyan-400: #22c3d6;
-  --cyan-200: #a5ecf3;
-  --cyan-100: #d4f6fa;
-  --sky-50: #f2f8fc;
-  --sky-100: #e4f1f8;
-  --line: #dce9f2;
-  --ink: #0b2545;
-  --ink-2: #48607a;
-  --ink-3: #7b8fa3;
+  /* Rafiq Flow — Palette D (Rafiq_AI_ID_Brand_Identity_Guide §03) */
+  --royal: #4b1d7a; /* Royal Purple — anchor, headings, key text */
+  --lavender: #9b6fe0; /* Lavender — secondary paths, cards, illustration */
+  --rose: #f49bb3; /* Soft Rose — small warm touches (never text on white) */
+  --peach: #ffc79e; /* Peach — sparing warm highlight */
+  --lilac: #f3eefe; /* Lilac Mist — calm light background */
+  --grad-flow: linear-gradient(90deg, #4b1d7a 0%, #9b6fe0 55%, #f49bb3 100%); /* main gradient */
+  --grad-warm: linear-gradient(90deg, #f49bb3 0%, #ffc79e 100%);
+  --grad-calm: linear-gradient(180deg, #f3eefe 0%, #9b6fe0 100%);
+
+  /* legacy token names, re-pointed to the brand palette */
+  --navy-950: #12061f;
+  --navy-900: #1f0b36;
+  --navy-800: #2d1150;
+  --navy-700: #4b1d7a;
+  --blue-600: #4b1d7a;
+  --blue-500: #7a4cc4;
+  --blue-100: #ebe2fb;
+  --blue-50: #f3eefe;
+  --teal-700: #3a1563;
+  --teal-600: #4b1d7a;
+  --teal-500: #6e3fb5;
+  --cyan-400: #9b6fe0;
+  --cyan-200: #d9c8f7;
+  --cyan-100: #ede5fc;
+  --sky-50: #f3eefe;
+  --sky-100: #eae1fb;
+  --line: #e4d9f5;
+  --ink: #4b1d7a;
+  --ink-2: #5e4a7c;
+  --ink-3: #75648f;
+  /* semantic status colours stay separate from the brand palette (guide §08–§10) */
   --ok: #12a58a;
   --ok-50: #e6f7f2;
   --warn: #d98a12;
   --warn-50: #fff5e3;
-  --app-bg: #f2f8fc;
-  --grad-brand: linear-gradient(135deg, #0b6e8e 0%, #1f7fd0 100%);
-  --grad-cyan: linear-gradient(135deg, #22c3d6 0%, #1f7fd0 100%);
-  --shadow-sm: 0 1px 2px rgba(11, 37, 69, 0.05), 0 4px 14px rgba(11, 37, 69, 0.05);
-  --shadow-md: 0 8px 30px rgba(11, 37, 69, 0.1);
-  --shadow-lg: 0 30px 80px rgba(3, 14, 30, 0.45);
+  --app-bg: #f3eefe;
+  --surface: #ffffff; /* cards and panels (re-pointed in dark mode) */
+  --surface-2: #faf7ff;
+  --grad-brand: linear-gradient(135deg, #4b1d7a 0%, #9b6fe0 100%);
+  --grad-cyan: linear-gradient(135deg, #6e3fb5 0%, #9b6fe0 100%);
+  --shadow-sm: 0 1px 2px rgba(38, 16, 64, 0.05), 0 4px 14px rgba(38, 16, 64, 0.05);
+  --shadow-md: 0 8px 30px rgba(38, 16, 64, 0.1);
+  --shadow-lg: 0 30px 80px rgba(16, 7, 26, 0.45);
   --font-ar: 'IBM Plex Sans Arabic', 'Inter', system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif;
   --font-en: 'Inter', 'IBM Plex Sans Arabic', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -172,10 +186,10 @@ ul {
 .btn--primary {
   background: var(--grad-brand);
   color: #fff;
-  box-shadow: 0 8px 24px rgba(31, 127, 208, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 24px rgba(115, 48, 191, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 .btn--primary:hover {
-  box-shadow: 0 12px 30px rgba(31, 127, 208, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow: 0 12px 30px rgba(115, 48, 191, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 .btn--glow {
   position: relative;
@@ -276,7 +290,7 @@ ul {
   justify-content: space-between;
   gap: 12px;
   color: #fff;
-  background: linear-gradient(180deg, rgba(5, 20, 39, 0.72), rgba(5, 20, 39, 0));
+  background: linear-gradient(180deg, rgba(21, 9, 35, 0.72), rgba(21, 9, 35, 0));
   pointer-events: none;
 }
 .topbar > * {
@@ -353,8 +367,8 @@ ul {
   font-weight: 600;
 }
 .tobtn {
-  background: rgba(34, 195, 214, 0.18);
-  border-color: rgba(34, 195, 214, 0.45);
+  background: rgba(119, 50, 198, 0.18);
+  border-color: rgba(119, 50, 198, 0.45);
 }
 @media (max-width: 860px) {
   .chapter span {

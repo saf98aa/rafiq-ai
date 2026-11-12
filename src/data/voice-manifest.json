@@ -36,12 +36,12 @@
     "ar": "e78e5bc9cc"
   },
   "screen.meds": {
-    "ar": "10d04021dd",
-    "en": "b60f39b52e"
+    "ar": "4cd9702965",
+    "en": "39ad9124c4"
   },
   "screen.map": {
-    "ar": "86e2664bf2",
-    "en": "aa62764124"
+    "ar": "1e1323f595",
+    "en": "3fe60efd14"
   },
   "screen.discharge": {
     "ar": "8d005dd545",
@@ -76,8 +76,8 @@
     "en": "20d2e4c885"
   },
   "where.4": {
-    "ar": "bb25e05cd3",
-    "en": "119d96ebbf"
+    "ar": "c0d1ccd6f0",
+    "en": "1fab2f9851"
   },
   "where.5": {
     "ar": "7fc908eefc",
@@ -108,8 +108,8 @@
     "en": "5786d19bd9"
   },
   "next.3": {
-    "ar": "2b984b2008",
-    "en": "af5ba4ff25"
+    "ar": "e175c0de70",
+    "en": "83058868c9"
   },
   "next.4": {
     "ar": "4e4049a9a5",
@@ -164,32 +164,32 @@
     "en": "1072b64b09"
   },
   "ans.pharmacy": {
-    "ar": "b88e8af0e4",
-    "en": "ff2953b6cc"
+    "ar": "f7361d8979",
+    "en": "d046dd3d37"
   },
   "route.reception": {
-    "ar": "e2ae28a4e7",
-    "en": "2c9d8cfdb7"
+    "ar": "1782e08e0c",
+    "en": "522eaab9b0"
   },
   "route.clinics": {
-    "ar": "a55aed406b",
-    "en": "dd2f1fabc4"
+    "ar": "a78b474b13",
+    "en": "9aa542c33a"
   },
   "route.lab": {
-    "ar": "a717f65801",
-    "en": "d05cf19b10"
+    "ar": "3664783eba",
+    "en": "6c2d9bb824"
   },
   "route.radiology": {
-    "ar": "e0b9c870c6",
-    "en": "e70cfb80d1"
+    "ar": "2ea7d64324",
+    "en": "9c7f8b8987"
   },
   "route.er": {
-    "ar": "8ecc1e9f42",
-    "en": "cbb6b26c97"
+    "ar": "353a72cef1",
+    "en": "2d448ccaa2"
   },
   "route.pharmacy": {
-    "ar": "e8cd51820a",
-    "en": "76237ef849"
+    "ar": "2299dfc780",
+    "en": "421bbf8fb1"
   },
   "med.intro": {
     "ar": "5c08cbab2a",
@@ -216,16 +216,16 @@
     "en": "a844cf83b1"
   },
   "story.meet": {
-    "ar": "91fb725038",
-    "en": "f8298a6b25"
+    "ar": "5e11d1df30",
+    "en": "b6cae6bfec"
   },
   "story.voice": {
-    "ar": "b3fb406f40",
-    "en": "3bb82869a3"
+    "ar": "9a9aaab0e8",
+    "en": "e2899d4a48"
   },
   "story.exams": {
-    "ar": "ed097d869a",
-    "en": "d9a0a458f4"
+    "ar": "2e63bfb2f3",
+    "en": "45106c2746"
   },
   "story.results": {
     "ar": "ffb3a81627",
@@ -234,5 +234,133 @@
   "story.done": {
     "ar": "71ea2442be",
     "en": "1b96086876"
+  },
+  "story.inpatient": {
+    "ar": "ac8d0c4ff0",
+    "en": "6fa8a4ead6"
+  },
+  "route.pedsClinic": {
+    "ar": "eed49c76df",
+    "en": "19b8f67f24"
+  },
+  "route.pedsEr": {
+    "ar": "83fa10c085",
+    "en": "83cb4a85fa"
+  },
+  "route.wards": {
+    "ar": "e47ca42340",
+    "en": "cd95b061dd"
+  },
+  "route.or": {
+    "ar": "063b40535b",
+    "en": "49fea8d7d9"
+  },
+  "route.nicu": {
+    "ar": "d88ce347e1",
+    "en": "5f5af0e267"
+  },
+  "route.delivery": {
+    "ar": "ba8fd444cb",
+    "en": "3a5057bcc6"
+  },
+  "screen.inpatient": {
+    "en": "3a055e538c",
+    "ar": "e08a2fd7ca"
+  },
+  "ans.notadmitted": {
+    "ar": "5465125edb",
+    "en": "d3e9265799"
+  },
+  "ans.nurse": {
+    "ar": "3375e646a5",
+    "en": "60be13dc33"
+  },
+  "ans.pt": {
+    "ar": "2a616b823a",
+    "en": "7d117ad69d"
+  },
+  "inp.cat.other": {
+    "ar": "94b7933643",
+    "en": "0c9a05ccca"
+  },
+  "inp.confirm": {
+    "ar": "58db6abb7e",
+    "en": "09889043dc"
+  },
+  "req.none": {
+    "ar": "b68f586ccd",
+    "en": "74d9720d44"
+  },
+  "req.0": {
+    "ar": "c9f144d346",
+    "en": "910259a703"
+  },
+  "req.1": {
+    "ar": "d390d1af32",
+    "en": "7e85b8d220"
+  },
+  "req.2": {
+    "ar": "300a584d29",
+    "en": "37ef7a446d"
+  },
+  "req.3": {
+    "ar": "871fe6e0c8",
+    "en": "835ceb7202"
+  },
+  "guide.story": {
+    "ar": "bcceff4e10",
+    "en": "5081c6bb3c"
+  },
+  "guide.intro": {
+    "ar": "c9a540f68e",
+    "en": "85f9df9a44"
+  },
+  "guide.missed.none": {
+    "ar": "7aafa93919",
+    "en": "c4143da5c6"
+  },
+  "guide.nochange": {
+    "ar": "68ccdfb008",
+    "en": "e2e5f361ff"
+  },
+  "guide.m1.use": {
+    "ar": "2a572367c3",
+    "en": "4615aa4029"
+  },
+  "guide.m1.care": {
+    "ar": "22470bbf77",
+    "en": "cad68038ff"
+  },
+  "guide.m1.how": {
+    "ar": "b409a84b6f",
+    "en": "059f5c2b04"
+  },
+  "guide.m2.use": {
+    "ar": "1936f37009",
+    "en": "e9c897af83"
+  },
+  "guide.m2.how": {
+    "ar": "cc04e42f31",
+    "en": "d6647e014a"
+  },
+  "guide.m2.care": {
+    "ar": "cf5df44ac5",
+    "en": "b5a5a297ce"
+  },
+  "guide.m3.use": {
+    "ar": "e6a111e620",
+    "en": "7165f30e44"
+  },
+  "guide.m3.how": {
+    "ar": "948f16544f",
+    "en": "dcb4191002"
+  },
+  "guide.m3.care": {
+    "ar": "c1576531dd",
+    "en": "e1b466b1c3"
+  },
+  "guide.m3.missed": {
+    "ar": "863007cfca",
+    "en": "9cef2e0b07"
   }
 }

@@ -4,7 +4,7 @@ import { Mark } from '../../components/Logo';
 import { companion, l, patient } from '../../data/content';
 import { hospitalPhotos } from '../../data/people';
 import { useStore, type Role } from '../../store';
-import { useVoice } from '../../voice/VoiceProvider';
+import { HeaderTools } from '../DisplayPanel';
 
 /** Demo patient selection: direct access, no external authentication. */
 function DemoPatientSelector() {
@@ -33,7 +33,7 @@ function DemoPatientSelector() {
 
 export default function Welcome() {
   const { t, setLoggedIn, tab, setExplainOpen } = useStore();
-  const v = useVoice();
+
 
   const enter = () => {
     setLoggedIn(true);
@@ -44,6 +44,18 @@ export default function Welcome() {
     <div className="welcome">
       <div className="welcome__bg">
         <img className="welcome__img" src={hospitalPhotos.exterior.src} alt="" />
+        {/* Rafiq Flow motif: a path that starts at a dot and leads down to "Start your journey" */}
+        <svg className="welcome__flow" viewBox="0 0 400 800" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="wflow" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#4b1d7a" />
+              <stop offset="0.55" stopColor="#9b6fe0" />
+              <stop offset="1" stopColor="#f49bb3" />
+            </linearGradient>
+          </defs>
+          <path className="welcome__flowpath" pathLength={1} d="M58 92C170 120 372 210 330 360S70 520 110 640 300 720 200 790" />
+          <circle cx="58" cy="92" r="7" className="welcome__flowdot" />
+        </svg>
       </div>
       <div className="welcome__orbs">
         <span />
@@ -51,9 +63,7 @@ export default function Welcome() {
         <span />
       </div>
       <div className="welcome__top">
-        <button className="welcome__info" onClick={() => v.speak('screen.welcome')} aria-label={t(l('اسمع شرح هذه الصفحة', 'Listen to this page'))}>
-          <Icon name="speaker" size={18} />
-        </button>
+        <HeaderTools />
         <button className="welcome__info" onClick={() => setExplainOpen(true)} aria-label={t(l('لماذا هذه الشاشة؟', 'Why this screen?'))}>
           <Icon name="info" size={18} />
         </button>
